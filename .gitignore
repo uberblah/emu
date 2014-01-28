@@ -4,4 +4,4 @@ main
 mkbin
 h2b
 *.o
-
+*~

@@ -8,6 +8,8 @@ FEATURES
  - No Memory Segmentation!
  - Simple Universal Device Interface!
  - Minimal Instruction Set!
+ - Lots of Registers!
+ - Typed Registers!
 
 IMPLICATIONS
 ============
@@ -15,3 +17,4 @@ IMPLICATIONS
  - Great for Videogames!
  - Easy to Learn!
  - Easy to Use!
+ 
