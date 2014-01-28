@@ -41,12 +41,14 @@ static uchar*   jmp   (uchar* i, uchar* e, void* m); //done
 static uchar*   jz    (uchar* i, uchar* e, void* m); //done
 static uchar*   jnz   (uchar* i, uchar* e, void* m); //done
 static uchar*   prt   (uchar* i, uchar* e, void* m); //done
-///////////////////////////////////////////////////////////////////////////////
+//  BASIC TYPES  //////////////////////////////////////////////////////////////
 static const uchar UCHAR  = 0;
 static const uchar USHORT = 1;
 static const uchar UINT   = 2;
 static const uchar FLOAT  = 3;
-///////////////////////////////////////////////////////////////////////////////
+//  SIZES OF BASIC TYPES
+static const uint sizes [4] = {1, 2, 4, 4};
+//  CORRESPONDS TO 'dual' (below)  ////////////////////////////////////////////
 static const uchar UCHARXUCHAR   = 0 ;
 static const uchar UCHARXUSHORT  = 1 ;
 static const uchar UCHARXUINT    = 2 ;
@@ -67,12 +69,11 @@ static const uchar FLOATXUSHORT  = 13;
 static const uchar FLOATXUINT    = 14;
 static const uchar FLOATXFLOAT   = 15;
 ///////////////////////////////////////////////////////////////////////////////
-static const uchar uchars[4]  = {0 , 1 , 2 , 3 };
-static const uchar ushorts[4] = {4 , 5 , 6 , 7 };
-static const uchar uints[4]   = {8 , 9 , 10, 11};
-static const uchar floats[4]  = {12, 13, 14, 15};
-static const uchar* dual[4] = {uchars, ushorts, uints, floats};
-static const uint sizes[4] = {1, 1, 2, 4};
+static const uchar  uchars  [4] = {0 , 1 , 2 , 3 };
+static const uchar  ushorts [4] = {4 , 5 , 6 , 7 };
+static const uchar  uints   [4] = {8 , 9 , 10, 11};
+static const uchar  floats  [4] = {12, 13, 14, 15};
+static const uchar* dual    [4] = {uchars, ushorts, uints, floats};
 ///////////////////////////////////////////////////////////////////////////////
 static inline void copystuff(uchar* src, uchar* dst, uchar type)
 {
