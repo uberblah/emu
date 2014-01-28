@@ -1,0 +1,7 @@
+*.exe
+main
+*.bin
+mkbin
+h2b
+*.o
+
