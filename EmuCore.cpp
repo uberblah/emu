@@ -1,6 +1,4 @@
 #include <cstdio>
-#include <algorithm>
-#include <typeindex>
 #include "EmuCore.hpp"
 
 using namespace emu;
