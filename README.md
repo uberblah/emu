@@ -4,8 +4,8 @@ A simple emulated processor
 
 FEATURES
 ========
- - No Memory Protection!
- - No Memory Segmentation!
+ - Execute Read/Writable Memory!
+ - Memory Segmentation Based on Device Boundaries!
  - Simple Universal Device Interface!
  - Minimal Instruction Set!
  - Lots of Registers!
