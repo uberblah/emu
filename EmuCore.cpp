@@ -4,43 +4,73 @@
 using namespace emu;
 using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
-static uchar*   nop   (uchar* i, uchar* e, void* m); //done
-static uchar*   set   (uchar* i, uchar* e, void* m); //done
-static uchar*   mov   (uchar* i, uchar* e, void* m); //done
-static uchar*   put   (uchar* i, uchar* e, void* m); //done
-static uchar*   get   (uchar* i, uchar* e, void* m); //done
-static uchar*   add   (uchar* i, uchar* e, void* m); //done
-static uchar*   sub   (uchar* i, uchar* e, void* m); //done
-static uchar*   dec   (uchar* i, uchar* e, void* m); //done
-static uchar*   inc   (uchar* i, uchar* e, void* m); //done
-static uchar*   mul   (uchar* i, uchar* e, void* m); //done
-static uchar*   div   (uchar* i, uchar* e, void* m); //done
-static uchar*   mod   (uchar* i, uchar* e, void* m);
-static uchar*   pow   (uchar* i, uchar* e, void* m);
-static uchar*   lg    (uchar* i, uchar* e, void* m);
-static uchar*   ln    (uchar* i, uchar* e, void* m);
-static uchar*   lsh   (uchar* i, uchar* e, void* m);
-static uchar*   rsh   (uchar* i, uchar* e, void* m);
-static uchar*   ars   (uchar* i, uchar* e, void* m);
-static uchar*   push  (uchar* i, uchar* e, void* m);
-static uchar*   pop   (uchar* i, uchar* e, void* m);
-static uchar*   sin   (uchar* i, uchar* e, void* m);
-static uchar*   cos   (uchar* i, uchar* e, void* m);
-static uchar*   tan   (uchar* i, uchar* e, void* m);
-static uchar*   asin  (uchar* i, uchar* e, void* m);
-static uchar*   acos  (uchar* i, uchar* e, void* m);
-static uchar*   atan  (uchar* i, uchar* e, void* m);
-static uchar*   sec   (uchar* i, uchar* e, void* m);
-static uchar*   csc   (uchar* i, uchar* e, void* m);
-static uchar*   ctan  (uchar* i, uchar* e, void* m);
-static uchar*   inot  (uchar* i, uchar* e, void* m); //done
-static uchar*   iand  (uchar* i, uchar* e, void* m); //done
-static uchar*   ior   (uchar* i, uchar* e, void* m); //done
-static uchar*   ixor  (uchar* i, uchar* e, void* m); //done
-static uchar*   jmp   (uchar* i, uchar* e, void* m); //done
-static uchar*   jz    (uchar* i, uchar* e, void* m); //done
-static uchar*   jnz   (uchar* i, uchar* e, void* m); //done
-static uchar*   prt   (uchar* i, uchar* e, void* m); //done
+static uchar*  nop        (uchar*, uchar*, void*); //done
+static uchar*  set_ivrv   (uchar*, uchar*, void*); //done
+static uchar*  set_ivrr   (uchar*, uchar*, void*);
+static uchar*  set_ivir   (uchar*, uchar*, void*);
+static uchar*  mov_rvrv   (uchar*, uchar*, void*); //done
+static uchar*  get_irrv   (uchar*, uchar*, void*);
+static uchar*  get_rrrv   (uchar*, uchar*, void*); //done
+static uchar*  put_rvir   (uchar*, uchar*, void*);
+static uchar*  put_rvrr   (uchar*, uchar*, void*); //done
+static uchar* push_rrrv   (uchar*, uchar*, void*);
+static uchar* push_irrv   (uchar*, uchar*, void*);
+static uchar*  pop_rrrv   (uchar*, uchar*, void*);
+static uchar*  pop_irrv   (uchar*, uchar*, void*);
+static uchar*  lea_rrivrv (uchar*, uchar*, void*);
+static uchar*  lea_rrrvrv (uchar*, uchar*, void*);
+static uchar*  lea_irivrv (uchar*, uchar*, void*);
+static uchar*  add_rvrv   (uchar*, uchar*, void*); //done
+static uchar*  add_ivrv   (uchar*, uchar*, void*);
+static uchar*  sub_rvrv   (uchar*, uchar*, void*); //done
+static uchar*  sub_ivrv   (uchar*, uchar*, void*);
+static uchar*  inc_rv     (uchar*, uchar*, void*); //done
+static uchar*  dec_rv     (uchar*, uchar*, void*); //done
+static uchar*  mul_rvrv   (uchar*, uchar*, void*); //done
+static uchar*  mul_ivrv   (uchar*, uchar*, void*);
+static uchar*  div_rvrv   (uchar*, uchar*, void*); //done
+static uchar*  div_ivrv   (uchar*, uchar*, void*);
+static uchar*  mod_rvrv   (uchar*, uchar*, void*);
+static uchar*  mod_ivrv   (uchar*, uchar*, void*);
+static uchar*  pow_rvrv   (uchar*, uchar*, void*);
+static uchar*  pow_ivrv   (uchar*, uchar*, void*);
+static uchar*  not_rv     (uchar*, uchar*, void*); //done
+static uchar*  and_rvrv   (uchar*, uchar*, void*); //done
+static uchar*  and_ivrv   (uchar*, uchar*, void*);
+static uchar*   or_rvrv   (uchar*, uchar*, void*); //done
+static uchar*   or_ivrv   (uchar*, uchar*, void*);
+static uchar*  xor_rvrv   (uchar*, uchar*, void*); //done
+static uchar*  xor_ivrv   (uchar*, uchar*, void*);
+static uchar*   lg_rv     (uchar*, uchar*, void*);
+static uchar*  lsh_rvrv   (uchar*, uchar*, void*);
+static uchar*  lsh_ivrv   (uchar*, uchar*, void*);
+static uchar*  rsh_rvrv   (uchar*, uchar*, void*);
+static uchar*  rsh_ivrv   (uchar*, uchar*, void*);
+static uchar*  ars_rvrv   (uchar*, uchar*, void*);
+static uchar*  ars_ivrv   (uchar*, uchar*, void*);
+static uchar*  jmp_rr     (uchar*, uchar*, void*); //done
+static uchar*  jmp_ir     (uchar*, uchar*, void*);
+static uchar*   jz_rvrr   (uchar*, uchar*, void*); //done
+static uchar*   jz_rvir   (uchar*, uchar*, void*);
+static uchar*  jnz_rvrr   (uchar*, uchar*, void*); //done
+static uchar*  jnz_rvir   (uchar*, uchar*, void*);
+static uchar*   jn_rvrr   (uchar*, uchar*, void*);
+static uchar*   jn_rvir   (uchar*, uchar*, void*);
+static uchar*  jnn_rvrr   (uchar*, uchar*, void*);
+static uchar*  jnn_rvir   (uchar*, uchar*, void*);
+static uchar* jmpr_rr     (uchar*, uchar*, void*);
+static uchar* jmpr_ir     (uchar*, uchar*, void*);
+static uchar*  jzr_rvrr   (uchar*, uchar*, void*);
+static uchar*  jzr_rvir   (uchar*, uchar*, void*);
+static uchar* jnzr_rvrr   (uchar*, uchar*, void*);
+static uchar* jnzr_rvir   (uchar*, uchar*, void*);
+static uchar*  jnr_rvrr   (uchar*, uchar*, void*);
+static uchar*  jnr_rvir   (uchar*, uchar*, void*);
+static uchar* jnnr_rvrr   (uchar*, uchar*, void*);
+static uchar* jnnr_rvir   (uchar*, uchar*, void*);
+static uchar*  prt_rv     (uchar*, uchar*, void*); //done
+static uchar*  prt_ir     (uchar*, uchar*, void*);
+static uchar*  prt_rr     (uchar*, uchar*, void*);
 //  BASIC TYPES  //////////////////////////////////////////////////////////////
 static const uchar UCHAR  = 0;
 static const uchar USHORT = 1;
@@ -109,25 +139,25 @@ EmuCore::EmuCore()
     ip = 0;
     end = mem + 4096;
     
-    itable[0x00] = nop  ;
-    itable[0x01] = set  ;
-    itable[0x02] = mov  ;
-    itable[0x03] = put  ;
-    itable[0x04] = get  ;
-    itable[0x05] = add  ;
-    itable[0x06] = sub  ;
-    itable[0x07] = inc  ;
-    itable[0x08] = dec  ;
-    itable[0x09] = mul  ;
-    itable[0x0a] = div  ;
-    itable[0x0b] = inot ;
-    itable[0x0c] = iand ;
-    itable[0x0d] = ior  ;
-    itable[0x0e] = ixor ;
-    itable[0x0f] = jmp  ;
-    itable[0x10] = jz   ;
-    itable[0x11] = jnz  ;
-    itable[0x12] = prt  ;
+    itable[0x00] = nop      ;
+    itable[0x01] = set_ivrv ;
+    itable[0x02] = mov_rvrv ;
+    itable[0x03] = put_rvrr ;
+    itable[0x04] = get_rrrv ;
+    itable[0x05] = add_rvrv ;
+    itable[0x06] = sub_rvrv ;
+    itable[0x07] = inc_rv   ;
+    itable[0x08] = dec_rv   ;
+    itable[0x09] = mul_rvrv ;
+    itable[0x0a] = div_rvrv ;
+    itable[0x0b] = not_rv   ;
+    itable[0x0c] = and_rvrv ;
+    itable[0x0d] =  or_rvrv ;
+    itable[0x0e] = xor_rvrv ;
+    itable[0x0f] = jmp_rr   ;
+    itable[0x10] =  jz_rvrr ;
+    itable[0x11] = jnz_rvrr ;
+    itable[0x12] = prt_rv   ;
     for(int i = 0x13; i < 0x100; i++)
     {
         itable[i] = nop;
@@ -182,7 +212,7 @@ static uchar* nop(uchar* i, uchar* e, void* c)
     return i;
 }
 //constant-to-register
-static uchar* set(uchar* i, uchar* e, void* c)
+static uchar* set_ivrv(uchar* i, uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     uchar* mem = core->getMem();
@@ -197,7 +227,7 @@ static uchar* set(uchar* i, uchar* e, void* c)
     return i + req;
 }
 //register-to-register: src, tgt
-static uchar* mov(uchar* i, uchar* e, void* c)
+static uchar* mov_rvrv(uchar* i, uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     uchar* mem = core->getMem();
@@ -212,7 +242,7 @@ static uchar* mov(uchar* i, uchar* e, void* c)
     return i + 3;
 }
 //register-to-memory: value, target
-static uchar* put(uchar* i, uchar* e, void* c)
+static uchar* put_rvrr(uchar* i, uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     uchar* mem = core->getMem();
@@ -231,7 +261,7 @@ static uchar* put(uchar* i, uchar* e, void* c)
     return i + 3;
 }
 //memory-to-register: addr, reg
-static uchar* get(uchar* i, uchar* e, void* c)
+static uchar* get_rrrv(uchar* i, uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     uchar* mem = core->getMem();
@@ -250,7 +280,7 @@ static uchar* get(uchar* i, uchar* e, void* c)
     return i + 3;
 }
 //add reg1 to reg2, store in reg2. dst determines type of operation
-static uchar* add(uchar* i, uchar* e, void* c)
+static uchar* add_rvrv(uchar* i, uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     uchar* mem = core->getMem();
@@ -321,7 +351,7 @@ static uchar* add(uchar* i, uchar* e, void* c)
     }
     return i + 3;
 }
-static uchar* sub(uchar* i, uchar* e, void* c)
+static uchar* sub_rvrv(uchar* i, uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     uchar* mem = core->getMem();
@@ -392,7 +422,7 @@ static uchar* sub(uchar* i, uchar* e, void* c)
     }
     return i + 3;
 }
-static uchar* inc(uchar* i, uchar* e, void* c)
+static uchar* inc_rv(uchar* i, uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     uchar* mem = core->getMem();
@@ -419,7 +449,7 @@ static uchar* inc(uchar* i, uchar* e, void* c)
     }
     return i + 2;
 }
-static uchar* dec(uchar* i, uchar* e, void* c)
+static uchar* dec_rv(uchar* i, uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     uchar* mem = core->getMem();
@@ -446,7 +476,7 @@ static uchar* dec(uchar* i, uchar* e, void* c)
     }
     return i + 2;
 }
-static uchar* mul(uchar* i, uchar* e, void* c)
+static uchar* mul_rvrv(uchar* i, uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     uchar* mem = core->getMem();
@@ -517,7 +547,7 @@ static uchar* mul(uchar* i, uchar* e, void* c)
     }
     return i + 3;
 }
-static uchar* div(uchar* i, uchar* e, void* c)
+static uchar* div_rvrv(uchar* i, uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     uchar* mem = core->getMem();
@@ -588,7 +618,7 @@ static uchar* div(uchar* i, uchar* e, void* c)
     }
     return i + 3;
 }
-static uchar* inot(uchar* i, uchar* e, void* c)
+static uchar* not_rv(uchar* i, uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     uchar* mem = core->getMem();
@@ -610,7 +640,7 @@ static uchar* inot(uchar* i, uchar* e, void* c)
     }
     return i + 3;
 }
-static uchar* iand(uchar* i, uchar* e, void* c)
+static uchar* and_rvrv(uchar* i, uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     uchar* mem = core->getMem();
@@ -673,7 +703,7 @@ static uchar* iand(uchar* i, uchar* e, void* c)
     }
     return i + 3;
 }
-static uchar* ior(uchar* i, uchar* e, void* c)
+static uchar* or_rvrv(uchar* i, uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     uchar* mem = core->getMem();
@@ -736,7 +766,7 @@ static uchar* ior(uchar* i, uchar* e, void* c)
     }
     return i + 3;
 }
-static uchar* ixor(uchar* i, uchar* e, void* c)
+static uchar* xor_rvrv(uchar* i, uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     uchar* mem = core->getMem();
@@ -799,7 +829,7 @@ static uchar* ixor(uchar* i, uchar* e, void* c)
     }
     return i + 3;
 }
-static uchar* jmp(uchar* i, uchar* e, void* c)
+static uchar* jmp_rr(uchar* i, uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     uchar* mem = core->getMem();
@@ -808,7 +838,7 @@ static uchar* jmp(uchar* i, uchar* e, void* c)
     if(core->getRegt()[i[1]] != UINT) return i + 1;
     return mem + *(uint*)reg;
 }
-static uchar* jz(uchar* i, uchar* e, void* c)
+static uchar* jz_rvrr(uchar* i, uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     uchar* mem = core->getMem();
@@ -843,7 +873,7 @@ static uchar* jz(uchar* i, uchar* e, void* c)
     if(!doit) return i + 3;
     return mem + *(uint*)r2;
 }
-static uchar* jnz(uchar* i, uchar* e, void* c)
+static uchar* jnz_rvrr(uchar* i, uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     uchar* mem = core->getMem();
@@ -878,7 +908,7 @@ static uchar* jnz(uchar* i, uchar* e, void* c)
     if(!doit) return i + 3;
     return mem + *(uint*)r2;
 }
-static uchar* prt(uchar* i, uchar* e, void* c)
+static uchar* prt_rv(uchar* i, uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     uchar* mem = core->getMem();
