@@ -34,6 +34,8 @@ static uchar*  mod_rvrv   (uchar*, uchar*, void*);
 static uchar*  mod_ivrv   (uchar*, uchar*, void*);
 static uchar*  pow_rvrv   (uchar*, uchar*, void*);
 static uchar*  pow_ivrv   (uchar*, uchar*, void*);
+static uchar*  neg_rv     (uchar*, uchar*, void*);
+static uchar* sqrt_rv     (uchar*, uchar*, void*);
 static uchar*  not_rv     (uchar*, uchar*, void*); //done
 static uchar*  and_rvrv   (uchar*, uchar*, void*); //done
 static uchar*  and_ivrv   (uchar*, uchar*, void*);
@@ -139,26 +141,57 @@ EmuCore::EmuCore()
     ip = 0;
     end = mem + 4096;
     
-    itable[0x00] = nop      ;
-    itable[0x01] = set_ivrv ;
-    itable[0x02] = mov_rvrv ;
-    itable[0x03] = put_rvrr ;
-    itable[0x04] = get_rrrv ;
-    itable[0x05] = add_rvrv ;
-    itable[0x06] = sub_rvrv ;
-    itable[0x07] = inc_rv   ;
-    itable[0x08] = dec_rv   ;
-    itable[0x09] = mul_rvrv ;
-    itable[0x0a] = div_rvrv ;
-    itable[0x0b] = not_rv   ;
-    itable[0x0c] = and_rvrv ;
-    itable[0x0d] =  or_rvrv ;
-    itable[0x0e] = xor_rvrv ;
-    itable[0x0f] = jmp_rr   ;
-    itable[0x10] =  jz_rvrr ;
-    itable[0x11] = jnz_rvrr ;
-    itable[0x12] = prt_rv   ;
-    for(int i = 0x13; i < 0x100; i++)
+    itable[0x00] =  nop        ;
+    itable[0x01] =  set_ivrv   ;
+    //itable[0x02] =  set_ivir   ;
+    //itable[0x03] =  set_ivrr   ;
+    itable[0x04] =  mov_rvrv   ;
+    //itable[0x05] =  get_irrv   ;
+    itable[0x06] =  get_rrrv   ;
+    //itable[0x07] =  put_rvir   ;
+    itable[0x08] =  put_rvrr   ;
+    //itable[0x09] = push_rrrv   ;
+    //itable[0x0A] = push_irrv   ;
+    //itable[0x0B] =  pop_rrrv   ;
+    //itable[0x0C] =  pop_irrv   ;
+    //itable[0x0D] =  lea_rrivrv ;
+    //itable[0x0E] =  lea_rrrvrv ;
+    //itable[0x0F] =  lea_irivrv ;
+    //itable[0x10] =  add_ivrv   ;
+    itable[0x11] =  add_rvrv   ;
+    //itable[0x12] =  sub_ivrv   ;
+    itable[0x13] =  sub_rvrv   ;
+    itable[0x14] =  inc_rv     ;
+    itable[0x15] =  dec_rv     ;
+    //itable[0x16] =  mul_ivrv   ;
+    itable[0x17] =  mul_rvrv   ;
+    //itable[0x18] =  neg_rv     ;
+    //itable[0x19] =  div_ivrv   ;
+    itable[0x1A] =  div_rvrv   ;
+    //itable[0x1B] =  mod_ivrv   ;
+    //itable[0x1C] =  mod_rvrv   ;
+    //itable[0x1D] =  pow_ivrv   ;
+    //itable[0x1E] =  pow_rvrv   ;
+    //itable[0x1F] = sqrt_rv     ;
+    itable[0x20] =  not_rv     ;
+    //itable[0x21] =  and_ivrv   ;
+    itable[0x22] =  and_rvrv   ;
+    //itable[0x23] =   or_ivrv   ;
+    itable[0x24] =   or_rvrv   ;
+    //itable[0x25] =  xor_ivrv   ;
+    itable[0x26] =  xor_rvrv   ;
+    //itable[0x27] =   lg_rv     ;
+    //itable[0x28] =  lsh_ivrv   ;
+    //itable[0x29] =  lsh_rvrv   ;
+    //itable[0x2A] =  rsh_ivrv   ;
+    //itable[0x2B] =  rsh_rvrv   ;
+    //itable[0x2C] =  ars_ivrv   ;
+    //itable[0x2D] =  ars_rvrv   ;
+    itable[0x2E] =  jmp_rr     ;
+    itable[0x2F] =   jz_rvrr   ;
+    itable[0x30] =  jnz_rvrr   ;
+    itable[0x31] =  prt_rv     ;
+    for(int i = 0x32; i < 0x100; i++)
     {
         itable[i] = nop;
     }
