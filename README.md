@@ -4,17 +4,18 @@ A simple emulated processor
 
 FEATURES
 ========
- - Execute Read/Writable Memory!
- - Memory Segmentation Based on Device Boundaries!
- - Simple Universal Device Interface!
- - Minimal Instruction Set!
- - Lots of Registers!
- - Typed Registers!
+ - execute read/writable memory!
+ - move IP to a different memory device!
+ - switch RAM to different devices!
+ - simple device I/O structure!
+ - minimal instruction set!
+ - lots of registers!
+ - typed registers!
 
 IMPLICATIONS
 ============
- - Great for Education!
- - Great for Videogames!
- - Easy to Learn!
- - Easy to Use!
+ - great for education!
+ - great for videogames!
+ - easy to learn!
+ - easy to use!
  
