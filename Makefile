@@ -10,7 +10,7 @@ test.bin: test.src mkbin
 	@./mkbin
 	@echo -e -n "\e[m"
 
-main: main.o instable.o emucore.o emu_mem.o emu_math.o emu_bits.o emu_jmp.o emu_debug.o | utypes.hpp
+main: main.o instable.o emucore.o emu_mem.o emu_math.o emu_bits.o emu_jmp.o emu_debug.o
 	@echo -e '\e[33mLINKING \e[96m$@\e[m \e[33mFROM \e[94m$^\e[m'
 	@$(CXX) $(LDFLAGS) $^ -o $@
 	@echo -e -n "\e[m"

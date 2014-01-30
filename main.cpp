@@ -3,13 +3,11 @@
 #include "EmuCore.hpp"
 using namespace emu;
 using namespace std;
-using namespace ugl;
-
 int main(int argc, char** argv)
 {
     printf("Initializing Virtual Processor...\n");
     EmuCore core = EmuCore();
-    uchar* mem = core.getMem();
+    uint8_t* mem = core.getMem();
     
     printf("Loading Test Program (test.bin)...\n");
     FILE* file = fopen("test.bin", "rb");
@@ -19,7 +17,7 @@ int main(int argc, char** argv)
         return 1;
     }
     
-    uint size = fread(mem, 1, 255, file);
+    uint32_t size = fread(mem, 1, 255, file);
     printf("Size of Test Program: %d\n", size);
     
     printf("Running Test Program...\n");

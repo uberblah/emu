@@ -4,110 +4,110 @@
 using namespace emu;
 using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
-static uchar*  nop        (uchar*, uchar*, void*); //done
-static uchar*  set_ivrv   (uchar*, uchar*, void*); //done
-static uchar*  set_ivrr   (uchar*, uchar*, void*);
-static uchar*  set_ivir   (uchar*, uchar*, void*);
-static uchar*  mov_rvrv   (uchar*, uchar*, void*); //done
-static uchar*  get_irrv   (uchar*, uchar*, void*);
-static uchar*  get_rrrv   (uchar*, uchar*, void*); //done
-static uchar*  put_rvir   (uchar*, uchar*, void*);
-static uchar*  put_rvrr   (uchar*, uchar*, void*); //done
-static uchar* push_rrrv   (uchar*, uchar*, void*);
-static uchar* push_irrv   (uchar*, uchar*, void*);
-static uchar*  pop_rrrv   (uchar*, uchar*, void*);
-static uchar*  pop_irrv   (uchar*, uchar*, void*);
-static uchar*  lea_rrivrv (uchar*, uchar*, void*);
-static uchar*  lea_rrrvrv (uchar*, uchar*, void*);
-static uchar*  lea_irivrv (uchar*, uchar*, void*);
-static uchar*  add_rvrv   (uchar*, uchar*, void*); //done
-static uchar*  add_ivrv   (uchar*, uchar*, void*);
-static uchar*  sub_rvrv   (uchar*, uchar*, void*); //done
-static uchar*  sub_ivrv   (uchar*, uchar*, void*);
-static uchar*  inc_rv     (uchar*, uchar*, void*); //done
-static uchar*  dec_rv     (uchar*, uchar*, void*); //done
-static uchar*  mul_rvrv   (uchar*, uchar*, void*); //done
-static uchar*  mul_ivrv   (uchar*, uchar*, void*);
-static uchar*  div_rvrv   (uchar*, uchar*, void*); //done
-static uchar*  div_ivrv   (uchar*, uchar*, void*);
-static uchar*  mod_rvrv   (uchar*, uchar*, void*);
-static uchar*  mod_ivrv   (uchar*, uchar*, void*);
-static uchar*  pow_rvrv   (uchar*, uchar*, void*);
-static uchar*  pow_ivrv   (uchar*, uchar*, void*);
-static uchar*  neg_rv     (uchar*, uchar*, void*);
-static uchar* sqrt_rv     (uchar*, uchar*, void*);
-static uchar*  not_rv     (uchar*, uchar*, void*); //done
-static uchar*  and_rvrv   (uchar*, uchar*, void*); //done
-static uchar*  and_ivrv   (uchar*, uchar*, void*);
-static uchar*   or_rvrv   (uchar*, uchar*, void*); //done
-static uchar*   or_ivrv   (uchar*, uchar*, void*);
-static uchar*  xor_rvrv   (uchar*, uchar*, void*); //done
-static uchar*  xor_ivrv   (uchar*, uchar*, void*);
-static uchar*   lg_rv     (uchar*, uchar*, void*);
-static uchar*  lsh_rvrv   (uchar*, uchar*, void*);
-static uchar*  lsh_ivrv   (uchar*, uchar*, void*);
-static uchar*  rsh_rvrv   (uchar*, uchar*, void*);
-static uchar*  rsh_ivrv   (uchar*, uchar*, void*);
-static uchar*  ars_rvrv   (uchar*, uchar*, void*);
-static uchar*  ars_ivrv   (uchar*, uchar*, void*);
-static uchar*  jmp_rr     (uchar*, uchar*, void*); //done
-static uchar*  jmp_ir     (uchar*, uchar*, void*);
-static uchar*   jz_rvrr   (uchar*, uchar*, void*); //done
-static uchar*   jz_rvir   (uchar*, uchar*, void*);
-static uchar*  jnz_rvrr   (uchar*, uchar*, void*); //done
-static uchar*  jnz_rvir   (uchar*, uchar*, void*);
-static uchar*   jn_rvrr   (uchar*, uchar*, void*);
-static uchar*   jn_rvir   (uchar*, uchar*, void*);
-static uchar*  jnn_rvrr   (uchar*, uchar*, void*);
-static uchar*  jnn_rvir   (uchar*, uchar*, void*);
-static uchar* jmpr_rr     (uchar*, uchar*, void*);
-static uchar* jmpr_ir     (uchar*, uchar*, void*);
-static uchar*  jzr_rvrr   (uchar*, uchar*, void*);
-static uchar*  jzr_rvir   (uchar*, uchar*, void*);
-static uchar* jnzr_rvrr   (uchar*, uchar*, void*);
-static uchar* jnzr_rvir   (uchar*, uchar*, void*);
-static uchar*  jnr_rvrr   (uchar*, uchar*, void*);
-static uchar*  jnr_rvir   (uchar*, uchar*, void*);
-static uchar* jnnr_rvrr   (uchar*, uchar*, void*);
-static uchar* jnnr_rvir   (uchar*, uchar*, void*);
-static uchar*  prt_rv     (uchar*, uchar*, void*); //done
-static uchar*  prt_ir     (uchar*, uchar*, void*);
-static uchar*  prt_rr     (uchar*, uchar*, void*);
+static uint8_t*  nop        (uint8_t*, uint8_t*, void*); //done
+static uint8_t*  set_ivrv   (uint8_t*, uint8_t*, void*); //done
+static uint8_t*  set_ivrr   (uint8_t*, uint8_t*, void*);
+static uint8_t*  set_ivir   (uint8_t*, uint8_t*, void*);
+static uint8_t*  mov_rvrv   (uint8_t*, uint8_t*, void*); //done
+static uint8_t*  get_irrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  get_rrrv   (uint8_t*, uint8_t*, void*); //done
+static uint8_t*  put_rvir   (uint8_t*, uint8_t*, void*);
+static uint8_t*  put_rvrr   (uint8_t*, uint8_t*, void*); //done
+static uint8_t* push_rrrv   (uint8_t*, uint8_t*, void*);
+static uint8_t* push_irrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  pop_rrrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  pop_irrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  lea_rrivrv (uint8_t*, uint8_t*, void*);
+static uint8_t*  lea_rrrvrv (uint8_t*, uint8_t*, void*);
+static uint8_t*  lea_irivrv (uint8_t*, uint8_t*, void*);
+static uint8_t*  add_rvrv   (uint8_t*, uint8_t*, void*); //done
+static uint8_t*  add_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  sub_rvrv   (uint8_t*, uint8_t*, void*); //done
+static uint8_t*  sub_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  inc_rv     (uint8_t*, uint8_t*, void*); //done
+static uint8_t*  dec_rv     (uint8_t*, uint8_t*, void*); //done
+static uint8_t*  mul_rvrv   (uint8_t*, uint8_t*, void*); //done
+static uint8_t*  mul_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  div_rvrv   (uint8_t*, uint8_t*, void*); //done
+static uint8_t*  div_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  mod_rvrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  mod_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  pow_rvrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  pow_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  neg_rv     (uint8_t*, uint8_t*, void*);
+static uint8_t* sqrt_rv     (uint8_t*, uint8_t*, void*);
+static uint8_t*  not_rv     (uint8_t*, uint8_t*, void*); //done
+static uint8_t*  and_rvrv   (uint8_t*, uint8_t*, void*); //done
+static uint8_t*  and_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*   or_rvrv   (uint8_t*, uint8_t*, void*); //done
+static uint8_t*   or_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  xor_rvrv   (uint8_t*, uint8_t*, void*); //done
+static uint8_t*  xor_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*   lg_rv     (uint8_t*, uint8_t*, void*);
+static uint8_t*  lsh_rvrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  lsh_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  rsh_rvrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  rsh_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  ars_rvrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  ars_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  jmp_rr     (uint8_t*, uint8_t*, void*); //done
+static uint8_t*  jmp_ir     (uint8_t*, uint8_t*, void*);
+static uint8_t*   jz_rvrr   (uint8_t*, uint8_t*, void*); //done
+static uint8_t*   jz_rvir   (uint8_t*, uint8_t*, void*);
+static uint8_t*  jnz_rvrr   (uint8_t*, uint8_t*, void*); //done
+static uint8_t*  jnz_rvir   (uint8_t*, uint8_t*, void*);
+static uint8_t*   jn_rvrr   (uint8_t*, uint8_t*, void*);
+static uint8_t*   jn_rvir   (uint8_t*, uint8_t*, void*);
+static uint8_t*  jnn_rvrr   (uint8_t*, uint8_t*, void*);
+static uint8_t*  jnn_rvir   (uint8_t*, uint8_t*, void*);
+static uint8_t* jmpr_rr     (uint8_t*, uint8_t*, void*);
+static uint8_t* jmpr_ir     (uint8_t*, uint8_t*, void*);
+static uint8_t*  jzr_rvrr   (uint8_t*, uint8_t*, void*);
+static uint8_t*  jzr_rvir   (uint8_t*, uint8_t*, void*);
+static uint8_t* jnzr_rvrr   (uint8_t*, uint8_t*, void*);
+static uint8_t* jnzr_rvir   (uint8_t*, uint8_t*, void*);
+static uint8_t*  jnr_rvrr   (uint8_t*, uint8_t*, void*);
+static uint8_t*  jnr_rvir   (uint8_t*, uint8_t*, void*);
+static uint8_t* jnnr_rvrr   (uint8_t*, uint8_t*, void*);
+static uint8_t* jnnr_rvir   (uint8_t*, uint8_t*, void*);
+static uint8_t*  prt_rv     (uint8_t*, uint8_t*, void*); //done
+static uint8_t*  prt_ir     (uint8_t*, uint8_t*, void*);
+static uint8_t*  prt_rr     (uint8_t*, uint8_t*, void*);
 //  BASIC TYPES  //////////////////////////////////////////////////////////////
-static const uchar UCHAR  = 0;
-static const uchar USHORT = 1;
-static const uchar UINT   = 2;
-static const uchar FLOAT  = 3;
+static const uint8_t UCHAR  = 0;
+static const uint8_t USHORT = 1;
+static const uint8_t UINT   = 2;
+static const uint8_t FLOAT  = 3;
 //  SIZES OF BASIC TYPES
-static const uint sizes [4] = {1, 2, 4, 4};
+static const uint32_t sizes [4] = {1, 2, 4, 4};
 //  CORRESPONDS TO 'dual' (below)  ////////////////////////////////////////////
-static const uchar UCHARXUCHAR   = 0 ;
-static const uchar UCHARXUSHORT  = 1 ;
-static const uchar UCHARXUINT    = 2 ;
-static const uchar UCHARXFLOAT   = 3 ;
+static const uint8_t UCHARXUCHAR   = 0 ;
+static const uint8_t UCHARXUSHORT  = 1 ;
+static const uint8_t UCHARXUINT    = 2 ;
+static const uint8_t UCHARXFLOAT   = 3 ;
 
-static const uchar USHORTXUCHAR  = 4 ;
-static const uchar USHORTXUSHORT = 5 ;
-static const uchar USHORTXUINT   = 6 ;
-static const uchar USHORTXFLOAT  = 7 ;
+static const uint8_t USHORTXUCHAR  = 4 ;
+static const uint8_t USHORTXUSHORT = 5 ;
+static const uint8_t USHORTXUINT   = 6 ;
+static const uint8_t USHORTXFLOAT  = 7 ;
 
-static const uchar UINTXUCHAR    = 8 ;
-static const uchar UINTXUSHORT   = 9 ;
-static const uchar UINTXUINT     = 10;
-static const uchar UINTXFLOAT    = 11;
+static const uint8_t UINTXUCHAR    = 8 ;
+static const uint8_t UINTXUSHORT   = 9 ;
+static const uint8_t UINTXUINT     = 10;
+static const uint8_t UINTXFLOAT    = 11;
 
-static const uchar FLOATXUCHAR   = 12;
-static const uchar FLOATXUSHORT  = 13;
-static const uchar FLOATXUINT    = 14;
-static const uchar FLOATXFLOAT   = 15;
+static const uint8_t FLOATXUCHAR   = 12;
+static const uint8_t FLOATXUSHORT  = 13;
+static const uint8_t FLOATXUINT    = 14;
+static const uint8_t FLOATXFLOAT   = 15;
 ///////////////////////////////////////////////////////////////////////////////
-static const uchar  uchars  [4] = {0 , 1 , 2 , 3 };
-static const uchar  ushorts [4] = {4 , 5 , 6 , 7 };
-static const uchar  uints   [4] = {8 , 9 , 10, 11};
-static const uchar  floats  [4] = {12, 13, 14, 15};
-static const uchar* dual    [4] = {uchars, ushorts, uints, floats};
+static const uint8_t  uint8_ts  [4] = {0 , 1 , 2 , 3 };
+static const uint8_t  uint16_ts [4] = {4 , 5 , 6 , 7 };
+static const uint8_t  uint32_ts   [4] = {8 , 9 , 10, 11};
+static const uint8_t  floats  [4] = {12, 13, 14, 15};
+static const uint8_t* dual    [4] = {uint8_ts, uint16_ts, uint32_ts, floats};
 ///////////////////////////////////////////////////////////////////////////////
-static inline void copystuff(uchar* src, uchar* dst, uchar type)
+static inline void copystuff(uint8_t* src, uint8_t* dst, uint8_t type)
 {
     switch(type)
     {
@@ -115,10 +115,10 @@ static inline void copystuff(uchar* src, uchar* dst, uchar type)
             *dst = *src;
             break;
         case USHORT:
-            *(ushort*)dst = *(ushort*)src;
+            *(uint16_t*)dst = *(uint16_t*)src;
             break;
         case UINT:
-            *(uint*)dst = *(uint*)src;
+            *(uint32_t*)dst = *(uint32_t*)src;
             break;
         case FLOAT:
             *(float*)dst = *(float*)src;
@@ -127,17 +127,17 @@ static inline void copystuff(uchar* src, uchar* dst, uchar type)
             break;
     }
 }
-static inline void copystuff(uchar* src, uchar* dst, uchar type1, uchar type2)
+static inline void copystuff(uint8_t* src, uint8_t* dst, uint8_t type1, uint8_t type2)
 {
     if(type1 > type2) type1 = type2;
     copystuff(src, dst, type1);
 }
 //7:bits, 3:flgs, 3:oflo
-static const uint regsize = 128;
+static const uint32_t regsize = 128;
 
 EmuCore::EmuCore()
 {
-    mem = new uchar[4096];
+    mem = new uint8_t[4096];
     ip = 0;
     end = mem + 4096;
     
@@ -196,10 +196,10 @@ EmuCore::EmuCore()
         itable[i] = nop;
     }
     
-    regs = new uchar[regsize];
-    regm = new uchar*[0x100];
-    regt = new uchar[0x100];
-    uchar* c = regs;
+    regs = new uint8_t[regsize];
+    regm = new uint8_t*[0x100];
+    regt = new uint8_t[0x100];
+    uint8_t* c = regs;
     for(int i = 0; i < 0x100; i += 8)
     {
         regm[i] = c;
@@ -232,10 +232,10 @@ EmuCore::~EmuCore()
 }
 
 //do nothing
-static uchar* nop(uchar* i, uchar* e, void* c)
+static uint8_t* nop(uint8_t* i, uint8_t* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
-    uchar* mem = core->getMem();
+    uint8_t* mem = core->getMem();
     i++;
     if(i == e)
     {
@@ -245,146 +245,146 @@ static uchar* nop(uchar* i, uchar* e, void* c)
     return i;
 }
 //constant-to-register
-static uchar* set_ivrv(uchar* i, uchar* e, void* c)
+static uint8_t* set_ivrv(uint8_t* i, uint8_t* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
-    uchar* mem = core->getMem();
-    uint diff = e - i;
+    uint8_t* mem = core->getMem();
+    uint32_t diff = e - i;
     if(diff < 3) return mem;
-    uchar* reg = core->getRegm()[i[1]];
-    uchar type = core->getRegt()[i[1]];
-    uint sz = sizes[type];
-    uint req = sz + 2;
+    uint8_t* reg = core->getRegm()[i[1]];
+    uint8_t type = core->getRegt()[i[1]];
+    uint32_t sz = sizes[type];
+    uint32_t req = sz + 2;
     if(diff < req) return mem;
     copystuff(i + 2, reg, type, type);
     return i + req;
 }
-static uchar*  set_ivrr   (uchar*, uchar*, void*);
-static uchar*  set_ivir   (uchar*, uchar*, void*);
+static uint8_t*  set_ivrr   (uint8_t*, uint8_t*, void*);
+static uint8_t*  set_ivir   (uint8_t*, uint8_t*, void*);
 //register-to-register: src, tgt
-static uchar* mov_rvrv(uchar* i, uchar* e, void* c)
+static uint8_t* mov_rvrv(uint8_t* i, uint8_t* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
-    uchar* mem = core->getMem();
+    uint8_t* mem = core->getMem();
     if(e - i < 3) return mem;
-    uchar** regm = core->getRegm();
-    uchar* src = regm[i[1]];
-    uchar* dst = regm[i[2]];
-    uchar* regt = core->getRegt();
-    uchar srct = regt[i[1]];
-    uchar dstt = regt[i[2]];
+    uint8_t** regm = core->getRegm();
+    uint8_t* src = regm[i[1]];
+    uint8_t* dst = regm[i[2]];
+    uint8_t* regt = core->getRegt();
+    uint8_t srct = regt[i[1]];
+    uint8_t dstt = regt[i[2]];
     copystuff(src, dst, srct, dstt);
     return i + 3;
 }
-static uchar*  get_irrv   (uchar*, uchar*, void*);
+static uint8_t*  get_irrv   (uint8_t*, uint8_t*, void*);
 //memory-to-register
-static uchar* get_rrrv(uchar* i, uchar* e, void* c)
+static uint8_t* get_rrrv(uint8_t* i, uint8_t* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
-    uchar* mem = core->getMem();
+    uint8_t* mem = core->getMem();
     if(e - i < 3) return mem;
-    uchar i1 = i[1];
-    uchar i2 = i[2];
-    uchar** regm = core->getRegm();
-    uchar* r1 = regm[i1];
-    uchar* r2 = regm[i2];
-    uchar* regt = core->getRegt();
-    uchar t1 = regt[i1];
-    uchar t2 = regt[i2];
+    uint8_t i1 = i[1];
+    uint8_t i2 = i[2];
+    uint8_t** regm = core->getRegm();
+    uint8_t* r1 = regm[i1];
+    uint8_t* r2 = regm[i2];
+    uint8_t* regt = core->getRegt();
+    uint8_t t1 = regt[i1];
+    uint8_t t2 = regt[i2];
     if(t1 != UINT) return i + 3;
-    uchar* tgt = mem + *(uint*)r1;
+    uint8_t* tgt = mem + *(uint32_t*)r1;
     copystuff(tgt, r2, t2, t2);
     return i + 3;
 }
-static uchar*  put_rvir   (uchar*, uchar*, void*);
+static uint8_t*  put_rvir   (uint8_t*, uint8_t*, void*);
 //register-to-memory: value, target
-static uchar* put_rvrr(uchar* i, uchar* e, void* c)
+static uint8_t* put_rvrr(uint8_t* i, uint8_t* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
-    uchar* mem = core->getMem();
+    uint8_t* mem = core->getMem();
     if(e - i < 3) return mem;
-    uchar i1 = i[1];
-    uchar i2 = i[2];
-    uchar** regm = core->getRegm();
-    uchar* r1 = regm[i1];
-    uchar* r2 = regm[i2];
-    uchar* regt = core->getRegt();
-    uchar t1 = regt[i1];
-    uchar t2 = regt[i2];
+    uint8_t i1 = i[1];
+    uint8_t i2 = i[2];
+    uint8_t** regm = core->getRegm();
+    uint8_t* r1 = regm[i1];
+    uint8_t* r2 = regm[i2];
+    uint8_t* regt = core->getRegt();
+    uint8_t t1 = regt[i1];
+    uint8_t t2 = regt[i2];
     if(t2 != UINT) return i + 3;
-    uchar* tgt = mem + *(uint*)r2;
+    uint8_t* tgt = mem + *(uint32_t*)r2;
     copystuff(r1, tgt, t1, t1);
     return i + 3;
 }
-static uchar* push_rrrv   (uchar*, uchar*, void*);
-static uchar* push_irrv   (uchar*, uchar*, void*);
-static uchar*  pop_rrrv   (uchar*, uchar*, void*);
-static uchar*  pop_irrv   (uchar*, uchar*, void*);
-static uchar*  lea_rrivrv (uchar*, uchar*, void*);
-static uchar*  lea_rrrvrv (uchar*, uchar*, void*);
-static uchar*  lea_irivrv (uchar*, uchar*, void*);
+static uint8_t* push_rrrv   (uint8_t*, uint8_t*, void*);
+static uint8_t* push_irrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  pop_rrrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  pop_irrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  lea_rrivrv (uint8_t*, uint8_t*, void*);
+static uint8_t*  lea_rrrvrv (uint8_t*, uint8_t*, void*);
+static uint8_t*  lea_irivrv (uint8_t*, uint8_t*, void*);
 //add reg1 to reg2, store in reg2. dst determines type of operation
-static uchar* add_rvrv(uchar* i, uchar* e, void* c)
+static uint8_t* add_rvrv(uint8_t* i, uint8_t* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
-    uchar* mem = core->getMem();
+    uint8_t* mem = core->getMem();
     if(e - i < 3) return mem;
-    uchar** regm = core->getRegm();
-    uchar* r1 = regm[i[1]];
-    uchar* r2 = regm[i[2]];
-    uchar* regt = core->getRegt();
-    uchar t1 = regt[i[1]];
-    uchar t2 = regt[i[2]];
-    uchar t = dual[t1][t2];
+    uint8_t** regm = core->getRegm();
+    uint8_t* r1 = regm[i[1]];
+    uint8_t* r2 = regm[i[2]];
+    uint8_t* regt = core->getRegt();
+    uint8_t t1 = regt[i[1]];
+    uint8_t t2 = regt[i[2]];
+    uint8_t t = dual[t1][t2];
     switch(t)
     {
         case UCHARXUCHAR:
             *r2 = *r1 + *r2;
             break;
         case UCHARXUSHORT:
-            *(ushort*)r2 = *r1 + *(ushort*)r2;
+            *(uint16_t*)r2 = *r1 + *(uint16_t*)r2;
             break;
         case UCHARXUINT:
-            *(uint*)r2 = *r1 + *(uint*)r2;
+            *(uint32_t*)r2 = *r1 + *(uint32_t*)r2;
             break;
         case UCHARXFLOAT:
             *(float*)r2 = *r1 + *(float*)r2;
             break;
             
         case USHORTXUCHAR:
-            *r2 = *(ushort*)r1 + *r2;
+            *r2 = *(uint16_t*)r1 + *r2;
             break;
         case USHORTXUSHORT:
-            *(ushort*)r2 = *(ushort*)r1 + *(ushort*)r2;
+            *(uint16_t*)r2 = *(uint16_t*)r1 + *(uint16_t*)r2;
             break;
         case USHORTXUINT:
-            *(uint*)r2 = *(ushort*)r1 + *(uint*)r2;
+            *(uint32_t*)r2 = *(uint16_t*)r1 + *(uint32_t*)r2;
             break;
         case USHORTXFLOAT:
-            *(float*)r2 = *(ushort*)r1 + *(float*)r2;
+            *(float*)r2 = *(uint16_t*)r1 + *(float*)r2;
             break;
             
         case UINTXUCHAR:
-            *r2 = *(ushort*)r1 + *r2;
+            *r2 = *(uint16_t*)r1 + *r2;
             break;
         case UINTXUSHORT:
-            *(ushort*)r2 = *(uint*)r1 + *(ushort*)r2;
+            *(uint16_t*)r2 = *(uint32_t*)r1 + *(uint16_t*)r2;
             break;
         case UINTXUINT:
-            *(uint*)r2 = *(uint*)r1 + *(uint*)r2;
+            *(uint32_t*)r2 = *(uint32_t*)r1 + *(uint32_t*)r2;
             break;
         case UINTXFLOAT:
-            *(float*)r2 = *(uint*)r1 + *(float*)r2;
+            *(float*)r2 = *(uint32_t*)r1 + *(float*)r2;
             break;
             
         case FLOATXUCHAR:
             *r2 = *(float*)r1 + *r2;
             break;
         case FLOATXUSHORT:
-            *(ushort*)r2 = *(float*)r1 + *(ushort*)r2;
+            *(uint16_t*)r2 = *(float*)r1 + *(uint16_t*)r2;
             break;
         case FLOATXUINT:
-            *(uint*)r2 = *(float*)r1 + *(uint*)r2;
+            *(uint32_t*)r2 = *(float*)r1 + *(uint32_t*)r2;
             break;
         case FLOATXFLOAT:
             *(float*)r2 = *(float*)r1 + *(float*)r2;
@@ -395,68 +395,68 @@ static uchar* add_rvrv(uchar* i, uchar* e, void* c)
     }
     return i + 3;
 }
-static uchar*  add_ivrv   (uchar*, uchar*, void*);
-static uchar* sub_rvrv(uchar* i, uchar* e, void* c)
+static uint8_t*  add_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t* sub_rvrv(uint8_t* i, uint8_t* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
-    uchar* mem = core->getMem();
+    uint8_t* mem = core->getMem();
     if(e - i < 3) return mem;
-    uchar** regm = core->getRegm();
-    uchar* r1 = regm[i[1]];
-    uchar* r2 = regm[i[2]];
-    uchar* regt = core->getRegt();
-    uchar t1 = regt[i[1]];
-    uchar t2 = regt[i[2]];
-    uchar t = dual[t1][t2];
+    uint8_t** regm = core->getRegm();
+    uint8_t* r1 = regm[i[1]];
+    uint8_t* r2 = regm[i[2]];
+    uint8_t* regt = core->getRegt();
+    uint8_t t1 = regt[i[1]];
+    uint8_t t2 = regt[i[2]];
+    uint8_t t = dual[t1][t2];
     switch(t)
     {
         case UCHARXUCHAR:
             *r2 = *r1 - *r2;
             break;
         case UCHARXUSHORT:
-            *(ushort*)r2 = *r1 - *(ushort*)r2;
+            *(uint16_t*)r2 = *r1 - *(uint16_t*)r2;
             break;
         case UCHARXUINT:
-            *(uint*)r2 = *r1 - *(uint*)r2;
+            *(uint32_t*)r2 = *r1 - *(uint32_t*)r2;
             break;
         case UCHARXFLOAT:
             *(float*)r2 = *r1 - *(float*)r2;
             break;
             
         case USHORTXUCHAR:
-            *r2 = *(ushort*)r1 - *r2;
+            *r2 = *(uint16_t*)r1 - *r2;
             break;
         case USHORTXUSHORT:
-            *(ushort*)r2 = *(ushort*)r1 - *(ushort*)r2;
+            *(uint16_t*)r2 = *(uint16_t*)r1 - *(uint16_t*)r2;
             break;
         case USHORTXUINT:
-            *(uint*)r2 = *(ushort*)r1 - *(uint*)r2;
+            *(uint32_t*)r2 = *(uint16_t*)r1 - *(uint32_t*)r2;
             break;
         case USHORTXFLOAT:
-            *(float*)r2 = *(ushort*)r1 - *(float*)r2;
+            *(float*)r2 = *(uint16_t*)r1 - *(float*)r2;
             break;
             
         case UINTXUCHAR:
-            *r2 = *(ushort*)r1 - *r2;
+            *r2 = *(uint16_t*)r1 - *r2;
             break;
         case UINTXUSHORT:
-            *(ushort*)r2 = *(uint*)r1 - *(ushort*)r2;
+            *(uint16_t*)r2 = *(uint32_t*)r1 - *(uint16_t*)r2;
             break;
         case UINTXUINT:
-            *(uint*)r2 = *(uint*)r1 - *(uint*)r2;
+            *(uint32_t*)r2 = *(uint32_t*)r1 - *(uint32_t*)r2;
             break;
         case UINTXFLOAT:
-            *(float*)r2 = *(uint*)r1 - *(float*)r2;
+            *(float*)r2 = *(uint32_t*)r1 - *(float*)r2;
             break;
             
         case FLOATXUCHAR:
             *r2 = *(float*)r1 - *r2;
             break;
         case FLOATXUSHORT:
-            *(ushort*)r2 = *(float*)r1 - *(ushort*)r2;
+            *(uint16_t*)r2 = *(float*)r1 - *(uint16_t*)r2;
             break;
         case FLOATXUINT:
-            *(uint*)r2 = *(float*)r1 - *(uint*)r2;
+            *(uint32_t*)r2 = *(float*)r1 - *(uint32_t*)r2;
             break;
         case FLOATXFLOAT:
             *(float*)r2 = *(float*)r1 - *(float*)r2;
@@ -467,24 +467,24 @@ static uchar* sub_rvrv(uchar* i, uchar* e, void* c)
     }
     return i + 3;
 }
-static uchar*  sub_ivrv   (uchar*, uchar*, void*);
-static uchar* inc_rv(uchar* i, uchar* e, void* c)
+static uint8_t*  sub_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t* inc_rv(uint8_t* i, uint8_t* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
-    uchar* mem = core->getMem();
+    uint8_t* mem = core->getMem();
     if(e - i < 2) return mem;
-    uchar* reg = core->getRegm()[i[1]];
-    uchar type = core->getRegt()[i[1]];
+    uint8_t* reg = core->getRegm()[i[1]];
+    uint8_t type = core->getRegt()[i[1]];
     switch(type)
     {
         case UCHAR:
             ++*reg;
             break;
         case USHORT:
-            ++*(ushort*)reg;
+            ++*(uint16_t*)reg;
             break;
         case UINT:
-            ++*(uint*)reg;
+            ++*(uint32_t*)reg;
             break;
         case FLOAT:
             *(float*)reg = *(float*)reg + 1.f;
@@ -495,23 +495,23 @@ static uchar* inc_rv(uchar* i, uchar* e, void* c)
     }
     return i + 2;
 }
-static uchar* dec_rv(uchar* i, uchar* e, void* c)
+static uint8_t* dec_rv(uint8_t* i, uint8_t* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
-    uchar* mem = core->getMem();
+    uint8_t* mem = core->getMem();
     if(e - i < 2) return mem;
-    uchar* reg = core->getRegm()[i[1]];
-    uchar type = core->getRegt()[i[1]];
+    uint8_t* reg = core->getRegm()[i[1]];
+    uint8_t type = core->getRegt()[i[1]];
     switch(type)
     {
         case UCHAR:
             --*reg;
             break;
         case USHORT:
-            --*(ushort*)reg;
+            --*(uint16_t*)reg;
             break;
         case UINT:
-            --*(uint*)reg;
+            --*(uint32_t*)reg;
             break;
         case FLOAT:
             *(float*)reg = *(float*)reg - 1.f;
@@ -522,67 +522,67 @@ static uchar* dec_rv(uchar* i, uchar* e, void* c)
     }
     return i + 2;
 }
-static uchar* mul_rvrv(uchar* i, uchar* e, void* c)
+static uint8_t* mul_rvrv(uint8_t* i, uint8_t* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
-    uchar* mem = core->getMem();
+    uint8_t* mem = core->getMem();
     if(e - i < 3) return mem;
-    uchar** regm = core->getRegm();
-    uchar* r1 = regm[i[1]];
-    uchar* r2 = regm[i[2]];
-    uchar* regt = core->getRegt();
-    uchar t1 = regt[i[1]];
-    uchar t2 = regt[i[2]];
-    uchar t = dual[t1][t2];
+    uint8_t** regm = core->getRegm();
+    uint8_t* r1 = regm[i[1]];
+    uint8_t* r2 = regm[i[2]];
+    uint8_t* regt = core->getRegt();
+    uint8_t t1 = regt[i[1]];
+    uint8_t t2 = regt[i[2]];
+    uint8_t t = dual[t1][t2];
     switch(t)
     {
         case UCHARXUCHAR:
             *r2 = *r1 * *r2;
             break;
         case UCHARXUSHORT:
-            *(ushort*)r2 = *r1 * *(ushort*)r2;
+            *(uint16_t*)r2 = *r1 * *(uint16_t*)r2;
             break;
         case UCHARXUINT:
-            *(uint*)r2 = *r1 * *(uint*)r2;
+            *(uint32_t*)r2 = *r1 * *(uint32_t*)r2;
             break;
         case UCHARXFLOAT:
             *(float*)r2 = *r1 * *(float*)r2;
             break;
             
         case USHORTXUCHAR:
-            *r2 = *(ushort*)r1 * *r2;
+            *r2 = *(uint16_t*)r1 * *r2;
             break;
         case USHORTXUSHORT:
-            *(ushort*)r2 = *(ushort*)r1 * *(ushort*)r2;
+            *(uint16_t*)r2 = *(uint16_t*)r1 * *(uint16_t*)r2;
             break;
         case USHORTXUINT:
-            *(uint*)r2 = *(ushort*)r1 * *(uint*)r2;
+            *(uint32_t*)r2 = *(uint16_t*)r1 * *(uint32_t*)r2;
             break;
         case USHORTXFLOAT:
-            *(float*)r2 = *(ushort*)r1 * *(float*)r2;
+            *(float*)r2 = *(uint16_t*)r1 * *(float*)r2;
             break;
             
         case UINTXUCHAR:
-            *r2 = *(ushort*)r1 * *r2;
+            *r2 = *(uint16_t*)r1 * *r2;
             break;
         case UINTXUSHORT:
-            *(ushort*)r2 = *(uint*)r1 * *(ushort*)r2;
+            *(uint16_t*)r2 = *(uint32_t*)r1 * *(uint16_t*)r2;
             break;
         case UINTXUINT:
-            *(uint*)r2 = *(uint*)r1 * *(uint*)r2;
+            *(uint32_t*)r2 = *(uint32_t*)r1 * *(uint32_t*)r2;
             break;
         case UINTXFLOAT:
-            *(float*)r2 = *(uint*)r1 * *(float*)r2;
+            *(float*)r2 = *(uint32_t*)r1 * *(float*)r2;
             break;
             
         case FLOATXUCHAR:
             *r2 = *(float*)r1 * *r2;
             break;
         case FLOATXUSHORT:
-            *(ushort*)r2 = *(float*)r1 * *(ushort*)r2;
+            *(uint16_t*)r2 = *(float*)r1 * *(uint16_t*)r2;
             break;
         case FLOATXUINT:
-            *(uint*)r2 = *(float*)r1 * *(uint*)r2;
+            *(uint32_t*)r2 = *(float*)r1 * *(uint32_t*)r2;
             break;
         case FLOATXFLOAT:
             *(float*)r2 = *(float*)r1 * *(float*)r2;
@@ -593,68 +593,68 @@ static uchar* mul_rvrv(uchar* i, uchar* e, void* c)
     }
     return i + 3;
 }
-static uchar*  mul_ivrv   (uchar*, uchar*, void*);
-static uchar* div_rvrv(uchar* i, uchar* e, void* c)
+static uint8_t*  mul_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t* div_rvrv(uint8_t* i, uint8_t* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
-    uchar* mem = core->getMem();
+    uint8_t* mem = core->getMem();
     if(e - i < 3) return mem;
-    uchar** regm = core->getRegm();
-    uchar* r1 = regm[i[1]];
-    uchar* r2 = regm[i[2]];
-    uchar* regt = core->getRegt();
-    uchar t1 = regt[i[1]];
-    uchar t2 = regt[i[2]];
-    uchar t = dual[t1][t2];
+    uint8_t** regm = core->getRegm();
+    uint8_t* r1 = regm[i[1]];
+    uint8_t* r2 = regm[i[2]];
+    uint8_t* regt = core->getRegt();
+    uint8_t t1 = regt[i[1]];
+    uint8_t t2 = regt[i[2]];
+    uint8_t t = dual[t1][t2];
     switch(t)
     {
         case UCHARXUCHAR:
             *r2 = *r1 / *r2;
             break;
         case UCHARXUSHORT:
-            *(ushort*)r2 = *r1 / *(ushort*)r2;
+            *(uint16_t*)r2 = *r1 / *(uint16_t*)r2;
             break;
         case UCHARXUINT:
-            *(uint*)r2 = *r1 / *(uint*)r2;
+            *(uint32_t*)r2 = *r1 / *(uint32_t*)r2;
             break;
         case UCHARXFLOAT:
             *(float*)r2 = *r1 / *(float*)r2;
             break;
             
         case USHORTXUCHAR:
-            *r2 = *(ushort*)r1 / *r2;
+            *r2 = *(uint16_t*)r1 / *r2;
             break;
         case USHORTXUSHORT:
-            *(ushort*)r2 = *(ushort*)r1 / *(ushort*)r2;
+            *(uint16_t*)r2 = *(uint16_t*)r1 / *(uint16_t*)r2;
             break;
         case USHORTXUINT:
-            *(uint*)r2 = *(ushort*)r1 / *(uint*)r2;
+            *(uint32_t*)r2 = *(uint16_t*)r1 / *(uint32_t*)r2;
             break;
         case USHORTXFLOAT:
-            *(float*)r2 = *(ushort*)r1 / *(float*)r2;
+            *(float*)r2 = *(uint16_t*)r1 / *(float*)r2;
             break;
             
         case UINTXUCHAR:
-            *r2 = *(ushort*)r1 / *r2;
+            *r2 = *(uint16_t*)r1 / *r2;
             break;
         case UINTXUSHORT:
-            *(ushort*)r2 = *(uint*)r1 / *(ushort*)r2;
+            *(uint16_t*)r2 = *(uint32_t*)r1 / *(uint16_t*)r2;
             break;
         case UINTXUINT:
-            *(uint*)r2 = *(uint*)r1 / *(uint*)r2;
+            *(uint32_t*)r2 = *(uint32_t*)r1 / *(uint32_t*)r2;
             break;
         case UINTXFLOAT:
-            *(float*)r2 = *(uint*)r1 / *(float*)r2;
+            *(float*)r2 = *(uint32_t*)r1 / *(float*)r2;
             break;
             
         case FLOATXUCHAR:
             *r2 = *(float*)r1 / *r2;
             break;
         case FLOATXUSHORT:
-            *(ushort*)r2 = *(float*)r1 / *(ushort*)r2;
+            *(uint16_t*)r2 = *(float*)r1 / *(uint16_t*)r2;
             break;
         case FLOATXUINT:
-            *(uint*)r2 = *(float*)r1 / *(uint*)r2;
+            *(uint32_t*)r2 = *(float*)r1 / *(uint32_t*)r2;
             break;
         case FLOATXFLOAT:
             *(float*)r2 = *(float*)r1 / *(float*)r2;
@@ -665,89 +665,89 @@ static uchar* div_rvrv(uchar* i, uchar* e, void* c)
     }
     return i + 3;
 }
-static uchar*  div_ivrv   (uchar*, uchar*, void*);
-static uchar*  mod_rvrv   (uchar*, uchar*, void*);
-static uchar*  mod_ivrv   (uchar*, uchar*, void*);
-static uchar*  pow_rvrv   (uchar*, uchar*, void*);
-static uchar*  pow_ivrv   (uchar*, uchar*, void*);
-static uchar* not_rv(uchar* i, uchar* e, void* c)
+static uint8_t*  div_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  mod_rvrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  mod_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  pow_rvrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  pow_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t* not_rv(uint8_t* i, uint8_t* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
-    uchar* mem = core->getMem();
+    uint8_t* mem = core->getMem();
     if(e - i < 3) return mem;
-    uchar* reg = core->getRegm()[i[1]];
-    uchar type = core->getRegt()[i[1]];
+    uint8_t* reg = core->getRegm()[i[1]];
+    uint8_t type = core->getRegt()[i[1]];
     switch(type)
     {
         case UCHAR:
-            *(uchar*)reg = ~*(uchar*)reg;
+            *(uint8_t*)reg = ~*(uint8_t*)reg;
             break;
         case USHORT:
-            *(ushort*)reg = ~*(ushort*)reg;
+            *(uint16_t*)reg = ~*(uint16_t*)reg;
             break;
         case UINT:
         case FLOAT:
-            *(uint*)reg = ~*(uint*)reg;
+            *(uint32_t*)reg = ~*(uint32_t*)reg;
             break;
     }
     return i + 3;
 }
-static uchar* and_rvrv(uchar* i, uchar* e, void* c)
+static uint8_t* and_rvrv(uint8_t* i, uint8_t* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
-    uchar* mem = core->getMem();
+    uint8_t* mem = core->getMem();
     if(e - i < 3) return mem;
-    uchar** regm = core->getRegm();
-    uchar* r1 = regm[i[1]];
-    uchar* r2 = regm[i[2]];
-    uchar* regt = core->getRegt();
-    uchar t1 = regt[i[1]];
-    uchar t2 = regt[i[2]];
-    uchar t = dual[t1][t2];
+    uint8_t** regm = core->getRegm();
+    uint8_t* r1 = regm[i[1]];
+    uint8_t* r2 = regm[i[2]];
+    uint8_t* regt = core->getRegt();
+    uint8_t t1 = regt[i[1]];
+    uint8_t t2 = regt[i[2]];
+    uint8_t t = dual[t1][t2];
     switch(t)
     {
         case UCHARXUCHAR:
             *r2 = *r1 & *r2;
             break;
         case UCHARXUSHORT:
-            *(ushort*)r2 = *r1 & *(ushort*)r2;
+            *(uint16_t*)r2 = *r1 & *(uint16_t*)r2;
             break;
         case UCHARXUINT:
         case UCHARXFLOAT:
-            *(uint*)r2 = *r1 & *(uint*)r2;
+            *(uint32_t*)r2 = *r1 & *(uint32_t*)r2;
             break;
 
         case USHORTXUCHAR:
-            *r2 = *(ushort*)r1 & *r2;
+            *r2 = *(uint16_t*)r1 & *r2;
             break;
         case USHORTXUSHORT:
-            *(ushort*)r2 = *(ushort*)r1 & *(ushort*)r2;
+            *(uint16_t*)r2 = *(uint16_t*)r1 & *(uint16_t*)r2;
             break;
         case USHORTXUINT:
         case USHORTXFLOAT:
-            *(uint*)r2 = *(ushort*)r1 & *(uint*)r2;
+            *(uint32_t*)r2 = *(uint16_t*)r1 & *(uint32_t*)r2;
             break;
             
         case UINTXUCHAR:
-            *r2 = *(ushort*)r1 & *r2;
+            *r2 = *(uint16_t*)r1 & *r2;
             break;
         case UINTXUSHORT:
-            *(ushort*)r2 = *(uint*)r1 & *(ushort*)r2;
+            *(uint16_t*)r2 = *(uint32_t*)r1 & *(uint16_t*)r2;
             break;
         case UINTXUINT:
         case UINTXFLOAT:
-            *(uint*)r2 = *(uint*)r1 & *(uint*)r2;
+            *(uint32_t*)r2 = *(uint32_t*)r1 & *(uint32_t*)r2;
             break;
             
         case FLOATXUCHAR:
-            *r2 = *(uint*)r1 & *r2;
+            *r2 = *(uint32_t*)r1 & *r2;
             break;
         case FLOATXUSHORT:
-            *(ushort*)r2 = *(uint*)r1 & *(ushort*)r2;
+            *(uint16_t*)r2 = *(uint32_t*)r1 & *(uint16_t*)r2;
             break;
         case FLOATXUINT:
         case FLOATXFLOAT:
-            *(uint*)r2 = *(uint*)r1 & *(uint*)r2;
+            *(uint32_t*)r2 = *(uint32_t*)r1 & *(uint32_t*)r2;
             break;
             
         default:
@@ -755,63 +755,63 @@ static uchar* and_rvrv(uchar* i, uchar* e, void* c)
     }
     return i + 3;
 }
-static uchar*  and_ivrv   (uchar*, uchar*, void*);
-static uchar* or_rvrv(uchar* i, uchar* e, void* c)
+static uint8_t*  and_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t* or_rvrv(uint8_t* i, uint8_t* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
-    uchar* mem = core->getMem();
+    uint8_t* mem = core->getMem();
     if(e - i < 3) return mem;
-    uchar** regm = core->getRegm();
-    uchar* r1 = regm[i[1]];
-    uchar* r2 = regm[i[2]];
-    uchar* regt = core->getRegt();
-    uchar t1 = regt[i[1]];
-    uchar t2 = regt[i[2]];
-    uchar t = dual[t1][t2];
+    uint8_t** regm = core->getRegm();
+    uint8_t* r1 = regm[i[1]];
+    uint8_t* r2 = regm[i[2]];
+    uint8_t* regt = core->getRegt();
+    uint8_t t1 = regt[i[1]];
+    uint8_t t2 = regt[i[2]];
+    uint8_t t = dual[t1][t2];
     switch(t)
     {
         case UCHARXUCHAR:
             *r2 = *r1 | *r2;
             break;
         case UCHARXUSHORT:
-            *(ushort*)r2 = *r1 | *(ushort*)r2;
+            *(uint16_t*)r2 = *r1 | *(uint16_t*)r2;
             break;
         case UCHARXUINT:
         case UCHARXFLOAT:
-            *(uint*)r2 = *r1 | *(uint*)r2;
+            *(uint32_t*)r2 = *r1 | *(uint32_t*)r2;
             break;
             
         case USHORTXUCHAR:
-            *r2 = *(ushort*)r1 | *r2;
+            *r2 = *(uint16_t*)r1 | *r2;
             break;
         case USHORTXUSHORT:
-            *(ushort*)r2 = *(ushort*)r1 | *(ushort*)r2;
+            *(uint16_t*)r2 = *(uint16_t*)r1 | *(uint16_t*)r2;
             break;
         case USHORTXUINT:
         case USHORTXFLOAT:
-            *(uint*)r2 = *(ushort*)r1 | *(uint*)r2;
+            *(uint32_t*)r2 = *(uint16_t*)r1 | *(uint32_t*)r2;
             break;
             
         case UINTXUCHAR:
-            *r2 = *(ushort*)r1 | *r2;
+            *r2 = *(uint16_t*)r1 | *r2;
             break;
         case UINTXUSHORT:
-            *(ushort*)r2 = *(uint*)r1 | *(ushort*)r2;
+            *(uint16_t*)r2 = *(uint32_t*)r1 | *(uint16_t*)r2;
             break;
         case UINTXUINT:
         case UINTXFLOAT:
-            *(uint*)r2 = *(uint*)r1 | *(uint*)r2;
+            *(uint32_t*)r2 = *(uint32_t*)r1 | *(uint32_t*)r2;
             break;
             
         case FLOATXUCHAR:
-            *r2 = *(uint*)r1 | *r2;
+            *r2 = *(uint32_t*)r1 | *r2;
             break;
         case FLOATXUSHORT:
-            *(ushort*)r2 = *(uint*)r1 | *(ushort*)r2;
+            *(uint16_t*)r2 = *(uint32_t*)r1 | *(uint16_t*)r2;
             break;
         case FLOATXUINT:
         case FLOATXFLOAT:
-            *(uint*)r2 = *(uint*)r1 | *(uint*)r2;
+            *(uint32_t*)r2 = *(uint32_t*)r1 | *(uint32_t*)r2;
             break;
             
         default:
@@ -819,63 +819,63 @@ static uchar* or_rvrv(uchar* i, uchar* e, void* c)
     }
     return i + 3;
 }
-static uchar*   or_ivrv   (uchar*, uchar*, void*);
-static uchar* xor_rvrv(uchar* i, uchar* e, void* c)
+static uint8_t*   or_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t* xor_rvrv(uint8_t* i, uint8_t* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
-    uchar* mem = core->getMem();
+    uint8_t* mem = core->getMem();
     if(e - i < 3) return mem;
-    uchar** regm = core->getRegm();
-    uchar* r1 = regm[i[1]];
-    uchar* r2 = regm[i[2]];
-    uchar* regt = core->getRegt();
-    uchar t1 = regt[i[1]];
-    uchar t2 = regt[i[2]];
-    uchar t = dual[t1][t2];
+    uint8_t** regm = core->getRegm();
+    uint8_t* r1 = regm[i[1]];
+    uint8_t* r2 = regm[i[2]];
+    uint8_t* regt = core->getRegt();
+    uint8_t t1 = regt[i[1]];
+    uint8_t t2 = regt[i[2]];
+    uint8_t t = dual[t1][t2];
     switch(t)
     {
         case UCHARXUCHAR:
             *r2 = *r1 ^ *r2;
             break;
         case UCHARXUSHORT:
-            *(ushort*)r2 = *r1 ^ *(ushort*)r2;
+            *(uint16_t*)r2 = *r1 ^ *(uint16_t*)r2;
             break;
         case UCHARXUINT:
         case UCHARXFLOAT:
-            *(uint*)r2 = *r1 ^ *(uint*)r2;
+            *(uint32_t*)r2 = *r1 ^ *(uint32_t*)r2;
             break;
             
         case USHORTXUCHAR:
-            *r2 = *(ushort*)r1 ^ *r2;
+            *r2 = *(uint16_t*)r1 ^ *r2;
             break;
         case USHORTXUSHORT:
-            *(ushort*)r2 = *(ushort*)r1 ^ *(ushort*)r2;
+            *(uint16_t*)r2 = *(uint16_t*)r1 ^ *(uint16_t*)r2;
             break;
         case USHORTXUINT:
         case USHORTXFLOAT:
-            *(uint*)r2 = *(ushort*)r1 ^ *(uint*)r2;
+            *(uint32_t*)r2 = *(uint16_t*)r1 ^ *(uint32_t*)r2;
             break;
             
         case UINTXUCHAR:
-            *r2 = *(ushort*)r1 ^ *r2;
+            *r2 = *(uint16_t*)r1 ^ *r2;
             break;
         case UINTXUSHORT:
-            *(ushort*)r2 = *(uint*)r1 ^ *(ushort*)r2;
+            *(uint16_t*)r2 = *(uint32_t*)r1 ^ *(uint16_t*)r2;
             break;
         case UINTXUINT:
         case UINTXFLOAT:
-            *(uint*)r2 = *(uint*)r1 ^ *(uint*)r2;
+            *(uint32_t*)r2 = *(uint32_t*)r1 ^ *(uint32_t*)r2;
             break;
             
         case FLOATXUCHAR:
-            *r2 = *(uint*)r1 ^ *r2;
+            *r2 = *(uint32_t*)r1 ^ *r2;
             break;
         case FLOATXUSHORT:
-            *(ushort*)r2 = *(uint*)r1 ^ *(ushort*)r2;
+            *(uint16_t*)r2 = *(uint32_t*)r1 ^ *(uint16_t*)r2;
             break;
         case FLOATXUINT:
         case FLOATXFLOAT:
-            *(uint*)r2 = *(uint*)r1 ^ *(uint*)r2;
+            *(uint32_t*)r2 = *(uint32_t*)r1 ^ *(uint32_t*)r2;
             break;
             
         default:
@@ -883,48 +883,48 @@ static uchar* xor_rvrv(uchar* i, uchar* e, void* c)
     }
     return i + 3;
 }
-static uchar*  xor_ivrv   (uchar*, uchar*, void*);
-static uchar*   lg_rv     (uchar*, uchar*, void*);
-static uchar*  lsh_rvrv   (uchar*, uchar*, void*);
-static uchar*  lsh_ivrv   (uchar*, uchar*, void*);
-static uchar*  rsh_rvrv   (uchar*, uchar*, void*);
-static uchar*  rsh_ivrv   (uchar*, uchar*, void*);
-static uchar*  ars_rvrv   (uchar*, uchar*, void*);
-static uchar*  ars_ivrv   (uchar*, uchar*, void*);
-static uchar* jmp_rr(uchar* i, uchar* e, void* c)
+static uint8_t*  xor_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*   lg_rv     (uint8_t*, uint8_t*, void*);
+static uint8_t*  lsh_rvrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  lsh_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  rsh_rvrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  rsh_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  ars_rvrv   (uint8_t*, uint8_t*, void*);
+static uint8_t*  ars_ivrv   (uint8_t*, uint8_t*, void*);
+static uint8_t* jmp_rr(uint8_t* i, uint8_t* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
-    uchar* mem = core->getMem();
+    uint8_t* mem = core->getMem();
     if(e - i < 2) return mem;
-    uchar* reg = core->getRegm()[i[1]];
+    uint8_t* reg = core->getRegm()[i[1]];
     if(core->getRegt()[i[1]] != UINT) return i + 1;
-    return mem + *(uint*)reg;
+    return mem + *(uint32_t*)reg;
 }
-static uchar*  jmp_ir     (uchar*, uchar*, void*);
-static uchar* jz_rvrr(uchar* i, uchar* e, void* c)
+static uint8_t*  jmp_ir     (uint8_t*, uint8_t*, void*);
+static uint8_t* jz_rvrr(uint8_t* i, uint8_t* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
-    uchar* mem = core->getMem();
+    uint8_t* mem = core->getMem();
     if(e - i < 3) return mem;
-    uchar** regm = core->getRegm();
-    uchar* regt = core->getRegt();
-    uchar i1 = i[1];
-    uchar i2 = i[2];
+    uint8_t** regm = core->getRegm();
+    uint8_t* regt = core->getRegt();
+    uint8_t i1 = i[1];
+    uint8_t i2 = i[2];
     if(regt[i2] != UINT) return i + 3;
-    uchar* r1 = regm[i1];
-    uchar* r2 = regm[i2];
-    uchar t1 = regt[i1];
+    uint8_t* r1 = regm[i1];
+    uint8_t* r2 = regm[i2];
+    uint8_t t1 = regt[i1];
     bool doit;
     switch(t1)
     {
         case UCHAR:
-            doit = !*(uchar*)r1;
+            doit = !*(uint8_t*)r1;
             break;
         case USHORT:
-            doit = !*(ushort*)r1;
+            doit = !*(uint16_t*)r1;
             break;
         case UINT:
-            doit = !*(uint*)r1;
+            doit = !*(uint32_t*)r1;
             break;
         case FLOAT:
             doit = !*(float*)r1;
@@ -934,33 +934,33 @@ static uchar* jz_rvrr(uchar* i, uchar* e, void* c)
             break;
     }
     if(!doit) return i + 3;
-    return mem + *(uint*)r2;
+    return mem + *(uint32_t*)r2;
 }
-static uchar*  jz_rvir     (uchar*, uchar*, void*);
-static uchar* jnz_rvrr(uchar* i, uchar* e, void* c)
+static uint8_t*  jz_rvir     (uint8_t*, uint8_t*, void*);
+static uint8_t* jnz_rvrr(uint8_t* i, uint8_t* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
-    uchar* mem = core->getMem();
+    uint8_t* mem = core->getMem();
     if(e - i < 3) return mem;
-    uchar** regm = core->getRegm();
-    uchar* regt = core->getRegt();
-    uchar i1 = i[1];
-    uchar i2 = i[2];
+    uint8_t** regm = core->getRegm();
+    uint8_t* regt = core->getRegt();
+    uint8_t i1 = i[1];
+    uint8_t i2 = i[2];
     if(regt[i2] != UINT) return i + 3;
-    uchar* r1 = regm[i1];
-    uchar* r2 = regm[i2];
-    uchar t1 = regt[i1];
+    uint8_t* r1 = regm[i1];
+    uint8_t* r2 = regm[i2];
+    uint8_t t1 = regt[i1];
     bool doit;
     switch(t1)
     {
         case UCHAR:
-            doit = *(uchar*)r1;
+            doit = *(uint8_t*)r1;
             break;
         case USHORT:
-            doit = *(ushort*)r1;
+            doit = *(uint16_t*)r1;
             break;
         case UINT:
-            doit = *(uint*)r1;
+            doit = *(uint32_t*)r1;
             break;
         case FLOAT:
             doit = *(float*)r1;
@@ -970,41 +970,41 @@ static uchar* jnz_rvrr(uchar* i, uchar* e, void* c)
             break;
     }
     if(!doit) return i + 3;
-    return mem + *(uint*)r2;
+    return mem + *(uint32_t*)r2;
 }
-static uchar*  jnz_rvir   (uchar*, uchar*, void*);
-static uchar*   jn_rvrr   (uchar*, uchar*, void*);
-static uchar*   jn_rvir   (uchar*, uchar*, void*);
-static uchar*  jnn_rvrr   (uchar*, uchar*, void*);
-static uchar*  jnn_rvir   (uchar*, uchar*, void*);
-static uchar* jmpr_rr     (uchar*, uchar*, void*);
-static uchar* jmpr_ir     (uchar*, uchar*, void*);
-static uchar*  jzr_rvrr   (uchar*, uchar*, void*);
-static uchar*  jzr_rvir   (uchar*, uchar*, void*);
-static uchar* jnzr_rvrr   (uchar*, uchar*, void*);
-static uchar* jnzr_rvir   (uchar*, uchar*, void*);
-static uchar*  jnr_rvrr   (uchar*, uchar*, void*);
-static uchar*  jnr_rvir   (uchar*, uchar*, void*);
-static uchar* jnnr_rvrr   (uchar*, uchar*, void*);
-static uchar* jnnr_rvir   (uchar*, uchar*, void*);
-static uchar* prt_rv(uchar* i, uchar* e, void* c)
+static uint8_t*  jnz_rvir   (uint8_t*, uint8_t*, void*);
+static uint8_t*   jn_rvrr   (uint8_t*, uint8_t*, void*);
+static uint8_t*   jn_rvir   (uint8_t*, uint8_t*, void*);
+static uint8_t*  jnn_rvrr   (uint8_t*, uint8_t*, void*);
+static uint8_t*  jnn_rvir   (uint8_t*, uint8_t*, void*);
+static uint8_t* jmpr_rr     (uint8_t*, uint8_t*, void*);
+static uint8_t* jmpr_ir     (uint8_t*, uint8_t*, void*);
+static uint8_t*  jzr_rvrr   (uint8_t*, uint8_t*, void*);
+static uint8_t*  jzr_rvir   (uint8_t*, uint8_t*, void*);
+static uint8_t* jnzr_rvrr   (uint8_t*, uint8_t*, void*);
+static uint8_t* jnzr_rvir   (uint8_t*, uint8_t*, void*);
+static uint8_t*  jnr_rvrr   (uint8_t*, uint8_t*, void*);
+static uint8_t*  jnr_rvir   (uint8_t*, uint8_t*, void*);
+static uint8_t* jnnr_rvrr   (uint8_t*, uint8_t*, void*);
+static uint8_t* jnnr_rvir   (uint8_t*, uint8_t*, void*);
+static uint8_t* prt_rv(uint8_t* i, uint8_t* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
-    uchar* mem = core->getMem();
+    uint8_t* mem = core->getMem();
     if(e - i < 2) return mem;
-    uchar i1 = i[1];
-    uchar* reg = core->getRegm()[i[1]];
-    uchar type = core->getRegt()[i[1]];
+    uint8_t i1 = i[1];
+    uint8_t* reg = core->getRegm()[i[1]];
+    uint8_t type = core->getRegt()[i[1]];
     switch(type)
     {
         case UCHAR:
             printf("reg[%x] = %2x\n", i1, *reg);
             break;
         case USHORT:
-            printf("reg[%x] = %4x\n", i1, *(ushort*)reg);
+            printf("reg[%x] = %4x\n", i1, *(uint16_t*)reg);
             break;
         case UINT:
-            printf("reg[%x] = %8x\n", i1, *(uint*)reg);
+            printf("reg[%x] = %8x\n", i1, *(uint32_t*)reg);
             break;
         case FLOAT:
             printf("reg[%x] = %f\n", i1, *(float*)reg);
@@ -1012,5 +1012,5 @@ static uchar* prt_rv(uchar* i, uchar* e, void* c)
     }
     return i + 2;
 }
-static uchar*  prt_ir     (uchar*, uchar*, void*);
-static uchar*  prt_rr     (uchar*, uchar*, void*);
+static uint8_t*  prt_ir     (uint8_t*, uint8_t*, void*);
+static uint8_t*  prt_rr     (uint8_t*, uint8_t*, void*);

@@ -3,8 +3,7 @@
 
 #include <functional>
 #include "InsTable.hpp"
-#include "utypes.hpp"
-using namespace ugl;
+#include <cstdint>
 
 namespace emu
 {
@@ -15,23 +14,23 @@ public:
     EmuCore();
     ~EmuCore();
     
-    inline void setIP(uchar* ip){if(mem <= ip && end > ip) this->ip = ip;}
+    inline void setIP(uint8_t* ip){if(mem <= ip && end > ip) this->ip = ip;}
     inline void step(){ip = itable.exec(ip, end, (void*)this);}
-    inline uchar* getMem(){return mem;}
-    inline uchar* getIP(){return ip;}
-    inline uchar* getEnd(){return end;}
-    inline uchar* getRegs(){return regs;}
-    inline uchar** getRegm(){return regm;}
-    inline uchar* getRegt(){return regt;}
+    inline uint8_t* getMem(){return mem;}
+    inline uint8_t* getIP(){return ip;}
+    inline uint8_t* getEnd(){return end;}
+    inline uint8_t* getRegs(){return regs;}
+    inline uint8_t** getRegm(){return regm;}
+    inline uint8_t* getRegt(){return regt;}
     
 private:
     InsTable itable;
-    uchar* mem;
-    uchar* ip;
-    uchar* end;
-    uchar* regs;
-    uchar** regm;
-    uchar* regt;
+    uint8_t* mem;
+    uint8_t* ip;
+    uint8_t* end;
+    uint8_t* regs;
+    uint8_t** regm;
+    uint8_t* regt;
 };
 
 }
