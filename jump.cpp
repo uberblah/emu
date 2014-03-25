@@ -98,8 +98,15 @@ emu_uchar*   jn_rvrr   (emu_uchar*, emu_uchar*, void*);
 emu_uchar*   jn_rvir   (emu_uchar*, emu_uchar*, void*);
 emu_uchar*  jnn_rvrr   (emu_uchar*, emu_uchar*, void*);
 emu_uchar*  jnn_rvir   (emu_uchar*, emu_uchar*, void*);
-emu_uchar* jmpr_rr     (emu_uchar*, emu_uchar*, void*);
-emu_uchar* jmpr_ir     (emu_uchar*, emu_uchar*, void*);
+emu_uchar* jmpr_rr     (emu_uchar*, emu_uchar*, void*)
+{
+
+}
+
+emu_uchar* jmpr_ir     (emu_uchar*, emu_uchar*, void*)
+{
+
+}
 emu_uchar*  jzr_rvrr   (emu_uchar*, emu_uchar*, void*);
 emu_uchar*  jzr_rvir   (emu_uchar*, emu_uchar*, void*);
 emu_uchar* jnzr_rvrr   (emu_uchar*, emu_uchar*, void*);

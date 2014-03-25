@@ -7,14 +7,11 @@
 #include "debug.hpp"
 using namespace emu;
 
-const emu_uint EMU_CORE_MEMORY=0x4000;
-const emu_uint EMU_CORE_NREGS=0x100;
-
 EmuCore::EmuCore()
 {
-    mem = new emu_uchar[EMU_CORE_MEMORY];
-    end = mem + EMU_CORE_MEMORY;
-    memsz = EMU_CORE_MEMORY;
+    mem = new emu_uchar[EMU_CORE_MEM];
+    end = mem + EMU_CORE_MEM;
+    memsz = EMU_CORE_MEM;
     ip = mem;
     regs = new emu_uchar[EMU_CORE_NREGS];
     regm = new emu_uchar*[EMU_CORE_NREGS];

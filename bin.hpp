@@ -3,17 +3,26 @@
 
 #include "util.hpp"
 
+#ifndef EMU_HEX_CAPS
+#define EMU_HEX_CAPS false
+#endif
+
 namespace emu
 {
 
-    //returns the number of bytes represented by a hex string
-    emu_uint hexlen(emu_uchar* hex);
-    //returns the hex equivalent of one byte, capitalized
-    emu_uchar* bin2hex(emu_uchar bin);
-    //returns byte for given hex, skipping useless chars
-    //if newaddr != NULL, places next hex start address in newaddr
-    emu_uchar hex2bin(emu_uchar* hex, emu_uchar** newaddr);
+    inline emu_uint hexlen(emu_uchar* hex);
 
+    inline void byte2hex
+        (emu_uchar byte, emu_char* out, bool caps = EMU_HEX_CAPS);
+
+    inline bool hex2byte(emu_char* hex, emu_uchar* out, emu_char** newaddr);
+
+    emu_uint bin2hex
+        (emu_uchar* bin, emu_uint isz, emu_char* out, emu_uint osz, 
+                                                    bool caps = EMU_HEX_CAPS);
+
+    emu_uint hex2bin(emu_char* hex, emu_uchar* out, emu_uint osz);
+    
 }
 
 #endif

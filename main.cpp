@@ -4,6 +4,7 @@
 #include "mem.hpp"
 using namespace emu;
 using namespace std;
+
 int main(int argc, char** argv)
 {
     printf("Initializing Virtual Processor...\n");
@@ -17,7 +18,7 @@ int main(int argc, char** argv)
         return 1;
     }
     
-    emu_uint size = fread(core->mem, 1, 255, file);
+    emu_uint size = fread(core->mem, 1, EMU_CORE_MEM, file);
     printf("Size of Test Program: %d\n", size);
     
     printf("Running Test Program...\n");
