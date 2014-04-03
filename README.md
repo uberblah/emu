@@ -8,9 +8,9 @@ FEATURES
  - move IP to a different memory device!
  - switch RAM to different devices!
  - simple device I/O structure!
- - minimal instruction set!
+ - minimal, extensible instruction set!
  - lots of registers!
- - typed registers!
+ - typed registers reduce needed instructions!
 
 IMPLICATIONS
 ============
