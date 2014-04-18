@@ -3,8 +3,8 @@ CYGBINS=main.exe hex2bin.exe bin2hex.exe
 OMAIN=main.o util.o core.o mem.o jump.o math.o bits.o sys.o debug.o bin.o
 OHEX2BIN=hex2bin.o util.o bin.o
 OBIN2HEX=bin2hex.o util.o bin.o 
-CFLAGS=-g
-LDFLAGS=-g
+CFLAGS=-O3
+LDFLAGS=-O3
 
 all: $(BINS)
 

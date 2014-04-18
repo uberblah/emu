@@ -4,7 +4,7 @@
 namespace emu
 {
 
-emu_uchar* nop(emu_uchar* i, emu_uchar* e, void* c)
+emu_uchar*  nop        (emu_uchar* i, emu_uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     i++;
@@ -12,7 +12,7 @@ emu_uchar* nop(emu_uchar* i, emu_uchar* e, void* c)
     return i;
 }
 
-emu_uchar* jmp_rr(emu_uchar* i, emu_uchar* e, void* c)
+emu_uchar*  jmp_rr     (emu_uchar* i, emu_uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     emu_uchar* mem = core->mem;
@@ -22,7 +22,7 @@ emu_uchar* jmp_rr(emu_uchar* i, emu_uchar* e, void* c)
     return mem + *(emu_uint*)reg;
 }
 emu_uchar*  jmp_ir     (emu_uchar*, emu_uchar*, void*);
-emu_uchar* jz_rvrr(emu_uchar* i, emu_uchar* e, void* c)
+emu_uchar*   jz_rvrr   (emu_uchar* i, emu_uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     emu_uchar* mem = core->mem;
@@ -58,7 +58,7 @@ emu_uchar* jz_rvrr(emu_uchar* i, emu_uchar* e, void* c)
     return mem + *(emu_uint*)r2;
 }
 emu_uchar*  jz_rvir     (emu_uchar*, emu_uchar*, void*);
-emu_uchar* jnz_rvrr(emu_uchar* i, emu_uchar* e, void* c)
+emu_uchar* jnz_rvrr     (emu_uchar* i, emu_uchar* e, void* c)
 {
     EmuCore* core = (EmuCore*)c;
     emu_uchar* mem = core->mem;
