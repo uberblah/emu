@@ -15,6 +15,7 @@
 namespace emu
 {    
 //a simple, flexible processor implementation using our "exec" classes
+//be careful: all its guts are hanging out for the world to touch and see!
     struct EmuCore
     {
         EmuCore();

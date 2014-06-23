@@ -2,6 +2,8 @@
 main
 *.bin
 mkbin
+hex2bin
+bin2hex
 h2b
 *.o
 *~

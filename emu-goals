@@ -1,0 +1,11 @@
+This is the specification for Nostalgia's default emu-based processor
+
+Things we care about most...
+1) Simplify the exposed API for people who may not know much about existing architectures, or about coding in general
+2) Maximize flexibility to allow the broadest possible range of external devices
+3) Optimize for speed any time the two goals above are reasonably covered by the API
+NOTE: There might not be any opportunities to do REAL optimization, but I need the preceding line to keep me comfortable.
+
+Things we don't care so much about...
+1) Making a class structure that looks or behaves like a real processor
+
