@@ -1,0 +1,6 @@
+the board has 256 plugs for devices
+a device has a memory, a void* object, callbacks for irq, cc, dc
+a memory has a pointer and a size
+a cpu has an instruction pointer and an instruction table
+most void* ref'd in devices will have reverse references too
+the device object will maintain a reference to the board

@@ -1,0 +1,6 @@
+*
+!.gitignore
+!Makefile
+!planning
+!emu/
+!emu/*
