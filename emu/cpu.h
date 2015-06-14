@@ -12,7 +12,7 @@ typedef uint8_t emu_insid;
 
 struct emu_cpu
 {
-  emu_device* host;
+  emu_device* dev;
   emu_offset ip;
   emu_instruction it[UINT8_MAX + 1];
 };
