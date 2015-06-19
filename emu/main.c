@@ -67,7 +67,7 @@ int main(int argc, char** argv)
   emu_cpu cpu;
   cpu.dev = &dev;
   cpu.ip = 0;
-  cpu.it = it;
+  for(i = 0; i < 0x100; i++) cpu.it[i] = it[i];
   
   return 0;
 }
