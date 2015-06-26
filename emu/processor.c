@@ -140,7 +140,7 @@ void emup_regset(emu_processor* proc, uint8_t regid, void* val)
     add = 2 * (regid & 0x01);
   }
   offset += add;
-  memcpy((void*)(proc->regs + offset), val, size);
+  memmove((void*)(proc->regs + offset), val, size);
 }
 
 void emup_regget(emu_processor* proc, uint8_t regid, void* out)
@@ -159,5 +159,5 @@ void emup_regget(emu_processor* proc, uint8_t regid, void* out)
     add = 2 * (regid & 0x01);
   }
   offset += add;
-  memcpy(out, (void*)(proc->regs + offset), size);
+  memmove(out, (void*)(proc->regs + offset), size);
 }
