@@ -7,13 +7,13 @@ OBJDIR=obj
 #OUTPUTS AND THEIR PREREQUISITES
 BINS=test
 LIBS=libemu.a
-HDRS=board
+HDRS=board processor
 OUTPUTS=$(BINS:%=$(BINDIR)/%) $(BINS) $(LIBS:%=$(LIBDIR)/%)
 
-OTEST=main board
+OTEST=main board processor
 TEST_OBJECTS=$(OTEST:%=$(OBJDIR)/%.o)
 
-OLIB=board
+OLIB=board processor
 LIB_OBJECTS=$(OLIB:%=$(OBJDIR)/%.o)
 
 #LINKING AND INCLUDES
