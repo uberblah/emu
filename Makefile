@@ -3,15 +3,24 @@ SRCDIR=emu
 BINDIR=bin
 LIBDIR=lib
 OBJDIR=obj
+TESTDIR=test
+
+TESTS=testboard testproc
 
 #OUTPUTS AND THEIR PREREQUISITES
-BINS=test
+BINS=main
 LIBS=libemu.a
 HDRS=board processor
-OUTPUTS=$(BINS:%=$(BINDIR)/%) $(BINS) $(LIBS:%=$(LIBDIR)/%)
+OUTPUTS=$(BINS:%=$(BINDIR)/%) $(TESTS:%=$(TESTDIR)/%) $(BINS) $(LIBS:%=$(LIBDIR)/%)
 
-OTEST=main board processor
-TEST_OBJECTS=$(OTEST:%=$(OBJDIR)/%.o)
+OMAIN=main board processor
+MAIN_OBJECTS=$(OMAIN:%=$(OBJDIR)/%.o)
+
+OBTEST=board boardtest
+BTEST_OBJECTS=$(OBTEST:%=$(OBJDIR)/%.o)
+
+OPTEST=board processor proctest
+PTEST_OBJECTS=$(OPTEST:%=$(OBJDIR)/%.o)
 
 OLIB=board processor
 LIB_OBJECTS=$(OLIB:%=$(OBJDIR)/%.o)
@@ -49,6 +58,9 @@ $(SRCDIR):
 $(LIBDIR):
 	@printf '\e[33mCREATING DIRECTORY \e[96m$@\e[m\n'
 	mkdir $(LIBDIR)
+$(TESTDIR):
+	@printf '\e[33mCREATING DIRECTORY \e[96m$@\e[m\n'
+	mkdir $(TESTDIR)
 
 #HEADER COPYING
 $(LIBDIR)/%.h: $(SRCDIR)/%.h
@@ -58,10 +70,20 @@ $(LIBDIR)/%.h: $(SRCDIR)/%.h
 #SYMLINKS FOR OUTPUTS
 %: $(BINDIR)/%
 	@printf '\e[33mCREATING SYMLINK \e[96m$@\e[m \e[33mTO \e[94m$^\e[m\n'
-	ln -s $^
+	ln -s $^ $@
 
 #BINARY TARGETS
-$(BINDIR)/test: $(TEST_OBJECTS) | $(BINDIR)
+$(BINDIR)/main: $(MAIN_OBJECTS) | $(BINDIR)
+	@printf '\033[33mLINKING \033[96m$@\033[m \033[33mFROM \033[94m$^\033[m\n'
+	$(CC) $(BUILD_PARAM) $^ $(LDFLAGS) -o $@
+	@printf "\033[m"
+
+$(TESTDIR)/testboard: $(BTEST_OBJECTS) | $(TESTDIR)
+	@printf '\033[33mLINKING \033[96m$@\033[m \033[33mFROM \033[94m$^\033[m\n'
+	$(CC) $(BUILD_PARAM) $^ $(LDFLAGS) -o $@
+	@printf "\033[m"
+
+$(TESTDIR)/testproc: $(PTEST_OBJECTS) | $(TESTDIR)
 	@printf '\033[33mLINKING \033[96m$@\033[m \033[33mFROM \033[94m$^\033[m\n'
 	$(CC) $(BUILD_PARAM) $^ $(LDFLAGS) -o $@
 	@printf "\033[m"
@@ -80,9 +102,9 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR) $(SRCDIR)
 #CLEANING
 clean:
 	@printf '\033[33mCLEANING...\033[m\n'
-	rm -f -v *~ $(TEST_OBJECTS)
+	rm -r -f -v *~ $(OBJDIR)
 
 clobber: clean
 	@printf '\033[33mCLOBBERING...\033[m\n'
-	rm -f -v $(OUTPUTS)
+	rm -r -f -v $(OUTPUTS) $(BINDIR) $(TESTDIR) $(LIBDIR)
 

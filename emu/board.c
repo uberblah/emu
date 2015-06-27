@@ -12,8 +12,8 @@ void emub_connect(emu_board* board, emu_device* device, uint8_t id)
 
 void emub_disconnect(emu_board* board, uint8_t id)
 {
-  if(!(*board)[id]) return;
   emu_device* device = (*board)[id];
+  if(!device) return;  
   if(device->dc_cb) device->dc_cb(device);
   (*board)[id] = NULL;
   device->board = NULL;

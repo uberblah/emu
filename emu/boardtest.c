@@ -68,6 +68,8 @@ void free_pinger(emu_device* pinger)
 int main(int argc, char** argv)
 {
   emu_board* b = (emu_board*)malloc(sizeof(emu_board));
+  int i = 0;
+  for(; i < 256; i++) (*b)[i] = NULL;
   emu_device* d1 = create_pinger();
   emu_device* d2 = create_pinger();
   int i1 = 0;
@@ -76,8 +78,7 @@ int main(int argc, char** argv)
   my_connect(b, d1, i1);
   my_connect(b, d2, i2);
 
-  int i = 0;
-  for(; i < 100; i += 10) my_broadcast(b, i);
+  for(i = 0; i < 100; i += 10) my_broadcast(b, i);
 
   for(i = 0; i < 0x100; i++) my_send(b, i, 0x100 - i);
 
