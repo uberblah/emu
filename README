@@ -5,9 +5,10 @@ GOAL: Create a simple motherboard-and-processor architecture that can be used in
 
 COMPLETED ITEMS
   BOARD
+  CPU
 
 TODO ITEMS
-  CPU
+  !!! CORE IS COMPLETE !!!
 
 TODO EXAMPLES
   MEMORY
