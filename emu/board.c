@@ -3,29 +3,38 @@
 
 emu_board* emub_create()
 {
+  //allocate the board
   emu_board* board = (emu_board*)malloc(sizeof(emu_board));
+  //set each plug to empty (NULL)
   int i = 0;
   for(; i < 256; i++) (*board)[i] = NULL;
+  //return it...
   return board;
 }
 
 void emub_free(emu_board* board)
 {
+  //for each occupied plug, disconnect the device
   unsigned int i = 0;
   for(; i < 256; i++)
   {
     emu_device* dev = (*board)[i];
     if(dev) emub_disconnect(board, i);
   }
+  //free the board itself
   free(board);
 }
 
 void emub_connect(emu_board* board, emu_device* device, uint8_t id)
 {
+  //clear the plug of any other devices
   if((*board)[id]) emub_disconnect(board, id);
+  //set the new device's fields
   device->board = board;
   device->id = id;
+  //plug the device in
   (*board)[id] = device;
+  //notify the device
   if(device->cc_cb) device->cc_cb(device);
 }
 
