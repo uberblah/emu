@@ -19,6 +19,8 @@ struct emu_device
   uint8_t id;
 };
 
+emu_board* emub_create();
+void emub_free(emu_board* board);
 void emub_connect(emu_board* board, emu_device* device, uint8_t id);
 void emub_disconnect(emu_board* board, uint8_t id);
 void emub_send(emu_board* board, uint8_t id, uint32_t code);

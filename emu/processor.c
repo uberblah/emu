@@ -52,7 +52,8 @@ emu_processor* emup_create(emu_instruction* iset, uint32_t memsize)
   proc->device = device; //processor refers to device
   proc->ip = 0; //zero the instruction pointer
   int i = 0; //fill in instruction set
-  for(; i < 256; i++) proc->iset[i] = iset[i];
+  if(iset) for(; i < 256; i++) proc->iset[i] = iset[i];
+  else for(; i < 256; i++) proc->iset[i] = NULL;
   //zero out the registers
   for(i = 0; i < 128; i++) proc->regs[i] = 0;
   proc->irq_cb = NULL;

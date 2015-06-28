@@ -1,6 +1,25 @@
 #include <stdlib.h>
 #include <emu/board.h>
 
+emu_board* emub_create()
+{
+  emu_board* board = (emu_board*)malloc(sizeof(emu_board));
+  int i = 0;
+  for(; i < 256; i++) (*board)[i] = NULL;
+  return board;
+}
+
+void emub_free(emu_board* board)
+{
+  unsigned int i = 0;
+  for(; i < 256; i++)
+  {
+    emu_device* dev = (*board)[i];
+    if(dev) emub_disconnect(board, i);
+  }
+  free(board);
+}
+
 void emub_connect(emu_board* board, emu_device* device, uint8_t id)
 {
   if((*board)[id]) emub_disconnect(board, id);
