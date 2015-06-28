@@ -41,20 +41,24 @@ void emub_connect(emu_board* board, emu_device* device, uint8_t id)
 void emub_disconnect(emu_board* board, uint8_t id)
 {
   emu_device* device = (*board)[id];
-  if(!device) return;  
+  if(!device) return; //if there's no device, stop here
+  //notify the device that we are unplugging it
   if(device->dc_cb) device->dc_cb(device);
+  //unplug the device
   (*board)[id] = NULL;
 }
 
 void emub_send(emu_board* board, uint8_t id, uint32_t code)
 {
   emu_device* device = (*board)[id];
-  if(!device) return;
+  if(!device) return; //if no device is plugged in, don't bother
+  //call the device's interrupt callback
   if(device->irq_cb) device->irq_cb(device, code);
 }
 
 void emub_broadcast(emu_board* board, uint32_t code)
 {
+  //just iterate over all plugs, sending the message to each
   int id = 0;
   for(; id < 0x100; id++) emub_send(board, id, code);
 }

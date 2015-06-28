@@ -5,10 +5,21 @@
 
 #include <emu/board.h>
 
+//TO GET THE FULL ID OF A PARTICULAR REGISTER PART...
+//EMU_REG_<REGID> | EMU_REGPART_<PARTID>
+
+//types of registers
 #define EMU_REGTYPE_INT8  0
 #define EMU_REGTYPE_INT16 1
 #define EMU_REGTYPE_INT32 2
 #define EMU_REGTYPE_FLOAT  3
+//register IDs
+//there are actually up to 32 registers
+//we have names for the first 26 (roman alphabet)
+//each one is 4 bytes long
+//these are spaced by 8 because we use the last 3 bits
+//  to determine which part of the register we're using
+//the first five bits are the register id
 #define EMU_REG_A 0x00
 #define EMU_REG_B 0x08
 #define EMU_REG_C 0x10
@@ -35,6 +46,16 @@
 #define EMU_REG_X 0xB8
 #define EMU_REG_Y 0xC0
 #define EMU_REG_Z 0xC8
+//register part IDs
+//these tell you which part of a register we refer to
+//I: All 4 bytes as an integer
+//F: All 4 bytes as a float
+//A: The first 16 bits as an integer
+//B: The second 16 bits as an integer
+//AA: The first byte as an integer
+//AB: The second byte as an integer
+//BA: The third byte as an integer
+//AB: The fourth byte as an integer
 #define EMU_REGPART_I  0x00
 #define EMU_REGPART_F  0x01
 #define EMU_REGPART_A  0x02
@@ -44,25 +65,39 @@
 #define EMU_REGPART_BA 0x06
 #define EMU_REGPART_BB 0x07
 
+//forward declaration of our emu_processor struct (see below)
 typedef struct emu_processor emu_processor;
+///an instruction is a callback operating on the processor
+///this should include incrementing the instruction pointer
 typedef void(*emu_instruction)(emu_processor* p);
 
+///the processor struct, which must be paired with a device.
+///recommend construction using emup_create (see below)
 struct emu_processor
 {
-  emu_instruction iset[256]; //the instruction set
-  uint8_t regs [128]; //register memory
-  uint32_t ip; //a byte-index into local memory
-  emu_device* device; //access to board, memory
-  emu_irq_cb irq_cb;
-  emu_ev_cb cc_cb;
-  emu_ev_cb dc_cb;
+  ///the processor's instruction set
+  emu_instruction iset[256];
+  ///area where register contents are stored
+  uint8_t regs [128];
+  ///the instruction pointer (to somewhere in shared memory)
+  uint32_t ip;
+  ///the device associated with this processor
+  ///go through here to find memory and the board
+  emu_device* device;
 };
 
+///create a processor and its device. return the processor.
+///the device pointer is stored in the processor's 'device' field
 emu_processor* emup_create(emu_instruction* iset, uint32_t memsize);
+///free a processor and its associated device
 void emup_free(emu_processor* proc);
+///step the processor, by executing one instruction from memory
 void emup_step(emu_processor* proc);
+///get the type of a register
 int emup_regtype(emu_processor* proc, uint8_t regid);
+///set the value in a register, or as far as possible
 void emup_regset(emu_processor* proc, uint8_t regid, void* val);
+///get the value of a register
 void emup_regget(emu_processor* proc, uint8_t regid, void* out);
 
 #endif

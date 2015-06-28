@@ -4,27 +4,6 @@
 
 #include <emu/processor.h>
 
-static void processor_irq_cb(emu_device* dev, uint32_t code)
-{
-  emu_processor* proc = (emu_processor*)dev->data;
-  if(!proc) return;
-  if(proc->irq_cb) proc->irq_cb(dev, code);
-}
-
-static void processor_cc_cb(emu_device* dev)
-{
-  emu_processor* proc = (emu_processor*)dev->data;
-  if(!proc) return;
-  if(proc->cc_cb) proc->cc_cb(dev);
-}
-
-static void processor_dc_cb(emu_device* dev)
-{
-  emu_processor* proc = (emu_processor*)dev->data;
-  if(!proc) return;
-  if(proc->dc_cb) proc->dc_cb(dev);
-}
-
 emu_processor* emup_create(emu_instruction* iset, uint32_t memsize)
 {
   //allocate and build the device
@@ -37,9 +16,9 @@ emu_processor* emup_create(emu_instruction* iset, uint32_t memsize)
     return NULL;
   }
   device->memsize = memsize;
-  device->irq_cb = processor_irq_cb;
-  device->cc_cb = processor_cc_cb;
-  device->dc_cb = processor_dc_cb;
+  device->irq_cb = NULL;
+  device->cc_cb = NULL;
+  device->dc_cb = NULL;
   //allocate, link and build the processor
   emu_processor* proc = (emu_processor*)malloc(sizeof(emu_processor));
   if(!proc)
@@ -56,9 +35,6 @@ emu_processor* emup_create(emu_instruction* iset, uint32_t memsize)
   else for(; i < 256; i++) proc->iset[i] = NULL;
   //zero out the registers
   for(i = 0; i < 128; i++) proc->regs[i] = 0;
-  proc->irq_cb = NULL;
-  proc->cc_cb = NULL;
-  proc->dc_cb = NULL;
   
   return proc;
 }
@@ -114,7 +90,7 @@ the third bit indicates whether the section is a float,
 if all three bits are zero, it's an integer
 */
 static const uint8_t last3 = 0x07;
-static const uint8_t last5 = 0x1F;
+static const uint8_t middle5 = 0x7C;
 
 int emup_regtype(emu_processor* proc, uint8_t regid)
 {
@@ -127,7 +103,7 @@ int emup_regtype(emu_processor* proc, uint8_t regid)
 
 void emup_regset(emu_processor* proc, uint8_t regid, void* val)
 {
-  uint32_t offset = ((regid >> 3) & last5) * 4;
+  uint32_t offset = (regid >> 1) & middle5;
   uint32_t add = 0;
   uint32_t size = 4;
   if(regid & 0x04)
@@ -146,7 +122,7 @@ void emup_regset(emu_processor* proc, uint8_t regid, void* val)
 
 void emup_regget(emu_processor* proc, uint8_t regid, void* out)
 {
-  uint32_t offset = ((regid >> 3) & last5) * 4;
+  uint32_t offset = (regid >> 1) & middle5;
   uint32_t add = 0;
   uint32_t size = 4;
   if(regid & 0x04)
