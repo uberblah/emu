@@ -13,9 +13,16 @@ void pinger_cc_cb(emu_device* pinger)
   printf("CONNECT: slot=%d\n", pinger->id);
 }
 
+void free_pinger(emu_device* pinger)
+{
+  free(pinger->mem);
+  free(pinger);
+}
+
 void pinger_dc_cb(emu_device* pinger)
 {
   printf("DISCONNECT: slot=%d\n", pinger->id);
+  free_pinger(pinger);
 }
 
 emu_device* create_pinger()
@@ -59,15 +66,9 @@ void my_send(emu_board* board, uint8_t id, uint32_t msg)
   emub_send(board, id, msg);
 }
 
-void free_pinger(emu_device* pinger)
-{
-  free(pinger->mem);
-  free(pinger);
-}
-
 int main(int argc, char** argv)
 {
-  emu_board* b = (emu_board*)malloc(sizeof(emu_board));
+  emu_board* b = emub_create();
   int i = 0;
   for(; i < 256; i++) (*b)[i] = NULL;
   emu_device* d1 = create_pinger();
@@ -82,12 +83,7 @@ int main(int argc, char** argv)
 
   for(i = 0; i < 0x100; i++) my_send(b, i, 0x100 - i);
 
-  my_disconnect(b, i1);
-  my_disconnect(b, i2);
-  
-  free_pinger(d2);
-  free_pinger(d1);
-  free(b);
+  emub_free(b);
   
   exit(EXIT_SUCCESS);
 }
