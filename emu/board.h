@@ -50,7 +50,7 @@ void emub_broadcast(emu_board* board, uint32_t code);
 
 ///read 'count' bytes from the board's shared memory to 'out'
 ///return the number of bytes successfully read
-int emub_read(emu_board* board, uint32_t addr, uint32_t count, void* out);
+uint32_t emub_read(emu_board* board, uint32_t addr, uint32_t count, void* out);
 ///write 'count' bytes to the board's shared memory from 'src'
 ///return the number of bytes successfully written
 uint32_t emub_write(emu_board* board, uint32_t addr, uint32_t count, void* src);

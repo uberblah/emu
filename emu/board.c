@@ -62,3 +62,51 @@ void emub_broadcast(emu_board* board, uint32_t code)
   int id = 0;
   for(; id < 0x100; id++) emub_send(board, id, code);
 }
+
+uint32_t emub_read(emu_board* board, uint32_t addr, uint32_t count, void* out)
+{
+    uint8_t devid = (addr >> 24) & 0xff;
+    emu_device* dev = (*board)[devid];
+    if(!dev) return 0; //don't bother if it's unplugged
+    uint8_t* mem = (uint8_t*)dev->mem; //don't bother unless it has memory
+    if(!mem) return 0;
+    uint32_t offset = addr & 0x00ffffff;
+    uint32_t endi = offset + count;
+    uint32_t memsize = dev->memsize;
+    if(count >= memsize) return 0;
+    uint8_t* src = mem + offset;
+    uint8_t* dst = (uint8_t*)out;
+    uint8_t* end = endi < memsize ? mem + endi : mem + memsize;
+    do
+    {
+	*dst = *src;
+	dst++;
+	src++;
+    }
+    while(src < end);
+    return dst - (uint8_t*)out;
+}
+
+uint32_t emub_write(emu_board* board, uint32_t addr, uint32_t count, void* from)
+{
+    uint8_t devid = (addr >> 24) & 0xff;
+    emu_device* dev = (*board)[devid];
+    if(!dev) return 0;
+    uint8_t* mem = (uint8_t*)dev->mem;
+    if(!mem) return 0;
+    uint32_t offset = addr & 0x00ffffff;
+    uint32_t endi = offset + count;
+    uint32_t memsize = dev->memsize;
+    if(count >= memsize) return 0;
+    uint8_t* src = (uint8_t*)from;
+    uint8_t* dst = mem + offset;
+    uint8_t* end = endi < memsize ? mem + endi : mem + memsize;
+    do
+    {
+	*dst = *src;
+	dst++;
+	src++;
+    }
+    while(dst < end);
+    return src - (uint8_t*)from;
+}

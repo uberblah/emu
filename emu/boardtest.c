@@ -66,7 +66,7 @@ void my_send(emu_board* board, uint8_t id, uint32_t msg)
   emub_send(board, id, msg);
 }
 
-int main(int argc, char** argv)
+void devicetest()
 {
   emu_board* b = emub_create();
   int i = 0;
@@ -84,6 +84,11 @@ int main(int argc, char** argv)
   for(i = 0; i < 0x100; i++) my_send(b, i, 0x100 - i);
 
   emub_free(b);
-  
+}
+
+int main(int argc, char** argv)
+{
+  devicetest();
+
   exit(EXIT_SUCCESS);
 }
