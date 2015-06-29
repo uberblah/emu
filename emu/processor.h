@@ -46,9 +46,12 @@
 #define EMU_REG_X   0xB8
 #define EMU_REG_Y   0xC0
 #define EMU_REG_Z   0xC8
-#define EMU_REG_FLG 0xD0
-#define EMU_REG_REM 0xD8
-#define EMU_REG_OFW 0xE0
+#define EMU_REG_ARG 0xD0
+#define EMU_REG_BP  0xD8
+#define EMU_REG_SP  0xE0
+#define EMU_REG_FLG 0xE8
+#define EMU_REG_REM 0xF0
+#define EMU_REG_OFW 0xF8
 //register part IDs
 //these tell you which part of a register we refer to
 //I: All 4 bytes as an integer
@@ -97,7 +100,9 @@ void emup_free(emu_processor* proc);
 ///step the processor, by executing one instruction from memory
 void emup_step(emu_processor* proc);
 ///get the type of a register
-int emup_regtype(emu_processor* proc, uint8_t regid);
+int emup_regtype(uint8_t regid);
+///get the size of a register
+uint32_t emup_regsize(uint8_t regid);
 ///set the value in a register, or as far as possible
 void emup_regset(emu_processor* proc, uint8_t regid, void* val);
 ///get the value of a register

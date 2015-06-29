@@ -92,13 +92,20 @@ if all three bits are zero, it's an integer
 static const uint8_t last3 = 0x07;
 static const uint8_t middle5 = 0x7C;
 
-int emup_regtype(emu_processor* proc, uint8_t regid)
+int emup_regtype(uint8_t regid)
 {
   uint8_t typepart = regid & last3;
   if(typepart & 0x04) return EMU_REGTYPE_INT8;
   if(typepart & 0x02) return EMU_REGTYPE_INT16;
   if(typepart & 0x01) return EMU_REGTYPE_FLOAT;
   return EMU_REGTYPE_INT32;
+}
+
+uint32_t emup_regsize(uint8_t regid)
+{
+  if(regid & 0x04) return 1;
+  if(regid & 0x02) return 2;
+  return 4;
 }
 
 void emup_regset(emu_processor* proc, uint8_t regid, void* val)

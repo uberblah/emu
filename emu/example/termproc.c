@@ -1,24 +1,74 @@
 #include <emu/example/termproc.h>
 
 //just a quick self-reminder about the rules of the set...
-//  destination last, reg2 before reg1 in div, sub, mod
+//  destination first, reg2 before reg1 in div, sub, mod
+//is the ip an index into the public memory of the processor,
+//  or of the entire board?
+//let's do board, just to simplify
 
 static void inop(emu_processor* proc)
 {
+  proc->ip++; //jump over the nop byte
+}
+
+static emu_board* getboard(emu_processor* proc)
+{
+  emu_board* board = proc->device->board;
+  if(!board)
+    fprintf(stderr, "no board attached to this processor!\n");
+  return board;
+}
+
+//set the value of a register with in-line data
+static void iset(emu_processor* proc)
+{
+  //get the board pointer
+  emu_board* board = getboard(proc);
+  if(!board) return;
+  //get the regid from the instruction stream
+  uint8_t regid;
+  if(!emub_read(board, proc->ip + 1, 1, (void*)(&regid))) return;
+  //figure out the size of the register
+  uint32_t value = 0;
+  uint32_t size = emup_regsize(regid);
+  //get the bytes from the instruction stream
+  if(emub_read(board, proc->ip + 2, size, (void*)(&value)) < size) return;
+  //place the bytes in the register
+  emup_regset(proc, regid, (void*)(&value));
+}
+
+//write register data to inline address
+static void iwt(emu_processor* proc)
+{
+
+}
+
+//read data from inline address to register
+static void ird(emu_processor* proc)
+{
+
+}
+
+//register of target address, register of value
+static void iwtr(emu_processor* proc)
+{
+  //get the board pointer
+  emu_board* board = getboard(proc);
+  if(!board) return;
+  //get the values and target address from listed registers
+  uint8_t regid;
+  uint32_t value = 0;
+  uint32_t addr = 0;
+  if(!emub_read(board, proc->ip + 1, 1, (void*)(&regid))) return;
+  emup_regget(proc, regid, (void*)(&value));
+  //get the address from a second register
+  if(!emub_read(board, proc->ip + 2, 1, (void*)(&regid))) return;
+  emup_regget(proc, regid, (void*)(&value));
+  //write the bytes to memory
   
 }
 
-static void iset(emu_processor* proc)
-{
-
-}
-
-static void iwrite(emu_processor* proc)
-{
-
-}
-
-static void iread(emu_processor* proc)
+static void irdr(emu_processor* proc)
 {
 
 }
@@ -190,8 +240,10 @@ emu_processor* emux_tp_create(uint32_t memsize)
   emu_instruction inset[256];
   inset[EMUX_TP_INOP]   = inop;
   inset[EMUX_TP_ISET]   = iset;
-  inset[EMUX_TP_IWRITE] = iwrite;
-  inset[EMUX_TP_IREAD]  = iread;
+  inset[EMUX_TP_IWT]    = iwt;
+  inset[EMUX_TP_IRD]    = ird;
+  inset[EMUX_TP_IWTR]   = iwtr;
+  inset[EMUX_TP_IRDR]   = irdr;
   inset[EMUX_TP_IMOV]   = imov;
   inset[EMUX_TP_IADD]   = iadd;
   inset[EMUX_TP_ISUB]   = isub;
