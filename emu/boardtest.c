@@ -44,25 +44,21 @@ emu_device* create_pinger()
 
 void my_connect(emu_board* board, emu_device* pinger, uint8_t id)
 {
-  printf("CONNECTING PINGER AT PLUG %d\n", id);
   emub_connect(board, pinger, id);
 }
 
 void my_disconnect(emu_board* board, uint8_t id)
 {
-  printf("DISCONNECTING PINGER AT PLUG %d\n", id);
   emub_disconnect(board, id);
 }
 
 void my_broadcast(emu_board* board, uint32_t msg)
 {
-  printf("BROADCASTING CODE %d\n", msg);
   emub_broadcast(board, msg);
 }
 
 void my_send(emu_board* board, uint8_t id, uint32_t msg)
 {
-  printf("SENDING %d TO PLUG %d\n", msg, id);
   emub_send(board, id, msg);
 }
 
@@ -74,13 +70,17 @@ void devicetest()
   int i;
   int i1 = 0;
   int i2 = 1;
-  
+
+  printf(">>> we are connecting two pingers, in slots %d and %d\n", i1, i2);
   my_connect(b, d1, i1);
   my_connect(b, d2, i2);
 
+  printf(">>> we will now broadcast the signals 0 through 10\n");
   for(i = 0; i < 100; i += 10) my_broadcast(b, i);
+  printf(">>> we will now send (255 - n) to each plug n\n");
   for(i = 0; i < 0x100; i++) my_send(b, i, 0x100 - i);
 
+  printf(">>> we will now free the board\n");
   emub_free(b);
 }
 
