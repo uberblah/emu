@@ -5,7 +5,7 @@ LIBDIR=lib
 OBJDIR=obj
 TESTDIR=test
 
-TESTS=testboard testproc
+TESTS=boardtest proctest
 
 #OUTPUTS AND THEIR PREREQUISITES
 BINS=main
@@ -78,12 +78,12 @@ $(BINDIR)/main: $(MAIN_OBJECTS) | $(BINDIR)
 	$(CC) $(BUILD_PARAM) $^ $(LDFLAGS) -o $@
 	@printf "\033[m"
 
-$(TESTDIR)/testboard: $(BTEST_OBJECTS) | $(TESTDIR)
+$(TESTDIR)/boardtest: $(BTEST_OBJECTS) | $(TESTDIR)
 	@printf '\033[33mLINKING \033[96m$@\033[m \033[33mFROM \033[94m$^\033[m\n'
 	$(CC) $(BUILD_PARAM) $^ $(LDFLAGS) -o $@
 	@printf "\033[m"
 
-$(TESTDIR)/testproc: $(PTEST_OBJECTS) | $(TESTDIR)
+$(TESTDIR)/proctest: $(PTEST_OBJECTS) | $(TESTDIR)
 	@printf '\033[33mLINKING \033[96m$@\033[m \033[33mFROM \033[94m$^\033[m\n'
 	$(CC) $(BUILD_PARAM) $^ $(LDFLAGS) -o $@
 	@printf "\033[m"

@@ -116,11 +116,17 @@ void memorytest()
 
   emub_connect(b, ram, 0);
 
+  //write some memory
   printf("should be 9: %d\n", emub_write(b, 0x000000, 9, (void*)string));
   printf("should be 9: %d\n", emub_write(b, 0x000008, 9, (void*)string));
   printf("should be 9: %d\n", emub_write(b, 0x000010, 9, (void*)string));
   printf("should be 28: %d\n", emub_read(b, 0x000000, 28, (void*)iobuffer));
   printf("should be 'uberblahuberblahuberblah': %s\n", iobuffer);
+
+  //write some memory at the end of the ram
+  printf("should be 4: %d\n", emub_write(b, 124, 9, (void*)string));
+  printf("should be 4: %d\n", emub_read(b, 124, 9, (void*)(iobuffer + 4)));
+  printf("should be uberuberuberblahuberblah: %s\n", iobuffer);
   
   emub_free(b);
   free(iobuffer);
