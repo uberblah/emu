@@ -69,10 +69,9 @@ void my_send(emu_board* board, uint8_t id, uint32_t msg)
 void devicetest()
 {
   emu_board* b = emub_create();
-  int i = 0;
-  for(; i < 256; i++) (*b)[i] = NULL;
   emu_device* d1 = create_pinger();
   emu_device* d2 = create_pinger();
+  int i;
   int i1 = 0;
   int i2 = 1;
   
@@ -80,15 +79,58 @@ void devicetest()
   my_connect(b, d2, i2);
 
   for(i = 0; i < 100; i += 10) my_broadcast(b, i);
-
   for(i = 0; i < 0x100; i++) my_send(b, i, 0x100 - i);
 
   emub_free(b);
 }
 
+void freeram(emu_device* ram)
+{
+  free(ram->mem);
+  free(ram);
+}
+
+static void ram_dc_cb(emu_device* ram)
+{
+  freeram(ram);
+}
+
+emu_device* makeram()
+{
+  emu_device* ram = (emu_device*)malloc(sizeof(emu_device));
+  ram->mem = (uint8_t*)malloc(128);
+  ram->memsize = 128;
+  ram->irq_cb = NULL;
+  ram->cc_cb = NULL;
+  ram->dc_cb = ram_dc_cb;
+  ram->data = NULL;
+  return ram;
+}
+
+void memorytest()
+{
+  emu_board* b = emub_create();
+  const char* string = "uberblah";
+  char* iobuffer = (char*)malloc(128);
+  emu_device* ram = makeram();
+
+  emub_connect(b, ram, 0);
+
+  printf("should be 9: %d\n", emub_write(b, 0x000000, 9, (void*)string));
+  printf("should be 9: %d\n", emub_write(b, 0x000008, 9, (void*)string));
+  printf("should be 9: %d\n", emub_write(b, 0x000010, 9, (void*)string));
+  printf("should be 28: %d\n", emub_read(b, 0x000000, 28, (void*)iobuffer));
+  printf("should be 'uberblahuberblahuberblah': %s\n", iobuffer);
+  
+  emub_free(b);
+  free(iobuffer);
+}
+
 int main(int argc, char** argv)
 {
   devicetest();
+  memorytest();
 
   exit(EXIT_SUCCESS);
 }
+
