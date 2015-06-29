@@ -10,7 +10,7 @@ TESTS=boardtest proctest
 #OUTPUTS AND THEIR PREREQUISITES
 BINS=main
 LIBS=libemu.a
-HDRS=board processor
+HDRS=board processor example/termproc
 OUTPUTS=$(BINS:%=$(BINDIR)/%) $(TESTS:%=$(TESTDIR)/%) $(BINS) $(LIBS:%=$(LIBDIR)/%)
 
 OMAIN=main board processor
@@ -22,7 +22,7 @@ BTEST_OBJECTS=$(OBTEST:%=$(OBJDIR)/%.o)
 OPTEST=board processor proctest
 PTEST_OBJECTS=$(OPTEST:%=$(OBJDIR)/%.o)
 
-OLIB=board processor
+OLIB=board processor example/termproc
 LIB_OBJECTS=$(OLIB:%=$(OBJDIR)/%.o)
 
 #LINKING AND INCLUDES
@@ -64,6 +64,7 @@ $(TESTDIR):
 
 #HEADER COPYING
 $(LIBDIR)/%.h: $(SRCDIR)/%.h
+	@mkdir -p $(dir $@)
 	@printf '\e[33mCOPYING \e[96m$@\e[m \e[33mFROM \e[94m$^\e[m\n'
 	cp $^ $@
 
@@ -77,17 +78,14 @@ $(BINDIR)/main: $(MAIN_OBJECTS) | $(BINDIR)
 	@printf '\033[33mLINKING \033[96m$@\033[m \033[33mFROM \033[94m$^\033[m\n'
 	$(CC) $(BUILD_PARAM) $^ $(LDFLAGS) -o $@
 	@printf "\033[m"
-
 $(TESTDIR)/boardtest: $(BTEST_OBJECTS) | $(TESTDIR)
 	@printf '\033[33mLINKING \033[96m$@\033[m \033[33mFROM \033[94m$^\033[m\n'
 	$(CC) $(BUILD_PARAM) $^ $(LDFLAGS) -o $@
 	@printf "\033[m"
-
 $(TESTDIR)/proctest: $(PTEST_OBJECTS) | $(TESTDIR)
 	@printf '\033[33mLINKING \033[96m$@\033[m \033[33mFROM \033[94m$^\033[m\n'
 	$(CC) $(BUILD_PARAM) $^ $(LDFLAGS) -o $@
 	@printf "\033[m"
-
 $(LIBDIR)/libemu.a: $(LIB_OBJECTS) | $(LIBDIR)
 	@printf '\033[33mARCHIVING \033[96m$@\033[m \033[33mFROM \033[94m$^\033[m\n'
 	ar rcs $@ $^
@@ -95,6 +93,7 @@ $(LIBDIR)/libemu.a: $(LIB_OBJECTS) | $(LIBDIR)
 
 #GENERIC OBJECT TARGET
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR) $(SRCDIR)
+	@mkdir -p $(dir $@)
 	@printf '\033[33mCOMPILING \033[96m$@\033[m \033[33mFROM \033[94m$^\033[m\n'
 	$(CC) $(CFLAGS) -c $< -o $@
 	@printf "\033[m"
@@ -103,7 +102,6 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR) $(SRCDIR)
 clean:
 	@printf '\033[33mCLEANING...\033[m\n'
 	rm -r -f -v *~ $(OBJDIR)
-
 clobber: clean
 	@printf '\033[33mCLOBBERING...\033[m\n'
 	rm -r -f -v $(OUTPUTS) $(BINDIR) $(TESTDIR) $(LIBDIR)
