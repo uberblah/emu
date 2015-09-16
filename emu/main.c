@@ -18,39 +18,97 @@ int main(int argc, char** argv)
     printf("you should see \"deadbeef\" and its parts\n");
     char regid = EMU_REG_A;
     int value = 0xdeadbeef;
-    //NOP
-    buf[0x00] = EMUX_TP_INOP;
+    int li = 0;
+
     //SET THE VALUE OF A REGISTER
-    buf[0x01] = EMUX_TP_ISET;
-    buf[0x02] = regid;
-    buf[0x03] = ((char*)&value)[0];
-    buf[0x04] = ((char*)&value)[1];
-    buf[0x05] = ((char*)&value)[2];
-    buf[0x06] = ((char*)&value)[3];
+    buf[li++] = EMUX_TP_INOP;
+    buf[li++] = EMUX_TP_ISET;
+    buf[li++] = regid;
+    buf[li++] = ((char*)&value)[0];
+    buf[li++] = ((char*)&value)[1];
+    buf[li++] = ((char*)&value)[2];
+    buf[li++] = ((char*)&value)[3];
+
     //READ THE DIFFERENT PARTS OF THE REGISTER
-    buf[0x07] = EMUX_TP_INOP; //more random nops
-    buf[0x08] = EMUX_TP_INOP;
-    buf[0x09] = EMUX_TP_IPRT;
-    buf[0x0a] = regid | EMU_REGPART_I;
-    buf[0x0b] = EMUX_TP_IPRT;
-    buf[0x0c] = regid | EMU_REGPART_A;
-    buf[0x0d] = EMUX_TP_IPRT;
-    buf[0x0e] = regid | EMU_REGPART_B;
-    buf[0x0f] = EMUX_TP_INOP;
-    buf[0x10] = EMUX_TP_IPRT;
-    buf[0x11] = regid | EMU_REGPART_AA;
-    buf[0x12] = EMUX_TP_IPRT;
-    buf[0x13] = regid | EMU_REGPART_AB;
-    buf[0x14] = EMUX_TP_IPRT;
-    buf[0x15] = regid | EMU_REGPART_BA;
-    buf[0x16] = EMUX_TP_IPRT;
-    buf[0x17] = regid | EMU_REGPART_BB;
+    buf[li++] = EMUX_TP_INOP; //more random nops
+    buf[li++] = EMUX_TP_INOP;
+    buf[li++] = EMUX_TP_IPRT;
+    buf[li++] = regid | EMU_REGPART_I;
+    buf[li++] = EMUX_TP_IPRT;
+    buf[li++] = regid | EMU_REGPART_A;
+    buf[li++] = EMUX_TP_IPRT;
+    buf[li++] = regid | EMU_REGPART_B;
+    buf[li++] = EMUX_TP_INOP;
+    buf[li++] = EMUX_TP_IPRT;
+    buf[li++] = regid | EMU_REGPART_AA;
+    buf[li++] = EMUX_TP_IPRT;
+    buf[li++] = regid | EMU_REGPART_AB;
+    buf[li++] = EMUX_TP_IPRT;
+    buf[li++] = regid | EMU_REGPART_BA;
+    buf[li++] = EMUX_TP_IPRT;
+    buf[li++] = regid | EMU_REGPART_BB;
+
     //WRITE THE TEST TO MEMORY
     emub_write(board, 0, TEST_MEMSIZE, (void*)buf);
-
+    //RUN THE TEST!
     proc->ip = 0;
-    while(proc->ip < 0x017)
+    while(proc->ip < li)
 	emup_step(proc);
+
+    //TEST THE WRITE AND READ INSTRUCTIONS
+    printf("you should see beginnings of \"deadbeef\"\n");
+    uint32_t addr = 0x100;
+    value = 0xdeadbeef;
+    li = 0;
+    //PUT VALUE IN REGISTER
+    buf[li++] = EMUX_TP_ISET;
+    buf[li++] = EMU_REG_A | EMU_REGPART_I;
+    buf[li++] = ((char*)&value)[0];
+    buf[li++] = ((char*)&value)[1];
+    buf[li++] = ((char*)&value)[2];
+    buf[li++] = ((char*)&value)[3];
+    //WRITE THE VALUE TO MEMORY
+    buf[li++] = EMUX_TP_IWT;
+    buf[li++] = EMU_REG_A | EMU_REGPART_I;
+    buf[li++] = ((char*)&addr)[0];
+    buf[li++] = ((char*)&addr)[1];
+    buf[li++] = ((char*)&addr)[2];
+    buf[li++] = ((char*)&addr)[3];
+    //READ PIECES OF THE VALUE AND DISPLAY THEM
+    buf[li++] = EMUX_TP_IRD;
+    buf[li++] = EMU_REG_B | EMU_REGPART_AA;
+    buf[li++] = ((char*)&addr)[0];
+    buf[li++] = ((char*)&addr)[1];
+    buf[li++] = ((char*)&addr)[2];
+    buf[li++] = ((char*)&addr)[3];
+    buf[li++] = EMUX_TP_IPRT;
+    buf[li++] = EMU_REG_B | EMU_REGPART_AA;
+    buf[li++] = EMUX_TP_IRD;
+    buf[li++] = EMU_REG_C | EMU_REGPART_A;
+    buf[li++] = ((char*)&addr)[0];
+    buf[li++] = ((char*)&addr)[1];
+    buf[li++] = ((char*)&addr)[2];
+    buf[li++] = ((char*)&addr)[3];
+    buf[li++] = EMUX_TP_IPRT;
+    buf[li++] = EMU_REG_C | EMU_REGPART_A;
+    buf[li++] = EMUX_TP_IRD;
+    buf[li++] = EMU_REG_D | EMU_REGPART_I;
+    buf[li++] = ((char*)&addr)[0];
+    buf[li++] = ((char*)&addr)[1];
+    buf[li++] = ((char*)&addr)[2];
+    buf[li++] = ((char*)&addr)[3];
+    buf[li++] = EMUX_TP_IPRT;
+    buf[li++] = EMU_REG_D | EMU_REGPART_I;
+
+    //WRITE THE TEST TO MEMORY
+    emub_write(board, 0, TEST_MEMSIZE, (void*)buf);
+    //RUN THE TEST!
+    proc->ip = 0;
+    while(proc->ip < li)
+	emup_step(proc);
+
+    //TEST THE WTR AND RDR INSTRUCTIONS
     
+    emub_free(board);
     exit(EXIT_SUCCESS);
 }
