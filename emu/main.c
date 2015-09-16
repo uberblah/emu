@@ -102,14 +102,14 @@ int main(int argc, char** argv)
     buf[li++] = ((char*)&addr)[3];
     buf[li++] = EMUX_TP_IPRT;
     buf[li++] = EMU_REG_D | EMU_REGPART_I;
-
+    
     //WRITE THE TEST TO MEMORY
     emub_write(board, 0, TEST_MEMSIZE, (void*)buf);
     //RUN THE TEST!
     proc->ip = 0;
     while(proc->ip < li)
 	emup_step(proc);
-
+    
     //TEST THE WTR AND RDR INSTRUCTIONS
     printf("you should see parts of \"deadbeef\"\n");
     addr = 0x200;
@@ -143,6 +143,39 @@ int main(int argc, char** argv)
     while(proc->ip < li)
 	emup_step(proc);
 
+    //TEST THE IMOV INSTRUCTION
+    printf("you should see \"beefbeef\" with a nice hole in it\n");
+    addr = 0x200;
+    value = 0xdeadbeef;
+    li = 0;
+    buf[li++] = EMUX_TP_ISET;
+    buf[li++] = EMU_REG_A | EMU_REGPART_I;
+    buf[li++] = ((char*)&value)[0];
+    buf[li++] = ((char*)&value)[1];
+    buf[li++] = ((char*)&value)[2];
+    buf[li++] = ((char*)&value)[3];
+    buf[li++] = EMUX_TP_ISET;
+    buf[li++] = EMU_REG_B | EMU_REGPART_I;
+    buf[li++] = 0;
+    buf[li++] = 0;
+    buf[li++] = 0;
+    buf[li++] = 0;
+    buf[li++] = EMUX_TP_IMOV;
+    buf[li++] = EMU_REG_B | EMU_REGPART_AA;
+    buf[li++] = EMU_REG_A | EMU_REGPART_I;
+    buf[li++] = EMUX_TP_IMOV;
+    buf[li++] = EMU_REG_B | EMU_REGPART_B;
+    buf[li++] = EMU_REG_A | EMU_REGPART_I;
+    buf[li++] = EMUX_TP_IPRT;
+    buf[li++] = EMU_REG_B | EMU_REGPART_I;
+
+    //WRITE TEST TO MEMORY
+    emub_write(board, 0, TEST_MEMSIZE, (void*)buf);
+    //RUN TEST
+    proc->ip = 0;
+    while(proc->ip < li)
+	emup_step(proc);
+    
     emub_free(board);
     exit(EXIT_SUCCESS);
 }
