@@ -13,7 +13,7 @@ LIBS=libemu.a
 HDRS=board processor example/termproc
 OUTPUTS=$(BINS:%=$(BINDIR)/%) $(TESTS:%=$(TESTDIR)/%) $(BINS) $(LIBS:%=$(LIBDIR)/%)
 
-OMAIN=main board processor
+OMAIN=main board processor example/termproc
 MAIN_OBJECTS=$(OMAIN:%=$(OBJDIR)/%.o)
 
 OBTEST=board boardtest

@@ -1,10 +1,12 @@
+#include <stdlib.h>
+#include <stdio.h>
+
 #include <emu/example/termproc.h>
 
-//just a quick self-reminder about the rules of the set...
-//  destination first, reg2 before reg1 in div, sub, mod
-//is the ip an index into the public memory of the processor,
-//  or of the entire board?
-//let's do board, just to simplify
+//value-containing register first
+//in mov, target register is first
+//first register receives values
+//first register is reduced by second in arithmetic ops
 
 static void inop(emu_processor* proc)
 {
@@ -27,7 +29,7 @@ static void iset(emu_processor* proc)
   if(!board) return;
   //get the regid from the instruction stream
   uint8_t regid;
-  if(!emub_read(board, proc->ip + 1, 1, (void*)(&regid))) return;
+  if(emub_read(board, proc->ip + 1, 1, (void*)(&regid)) < 1) return;
   //figure out the size of the register
   uint32_t value = 0;
   uint32_t size = emup_regsize(regid);
@@ -35,52 +37,171 @@ static void iset(emu_processor* proc)
   if(emub_read(board, proc->ip + 2, size, (void*)(&value)) < size) return;
   //place the bytes in the register
   emup_regset(proc, regid, (void*)(&value));
+  //increment the instruction pointer
+  proc->ip += 2 + size;
 }
 
 //write register data to inline address
 static void iwt(emu_processor* proc)
 {
-
+  //get the board pointer
+  emu_board* board = getboard(proc);
+  if(!board) return;
+  //get the source regid from the instruction stream
+  uint8_t srcregid;
+  if(emub_read(board, proc->ip + 1, 1, (void*)(&srcregid)) < 1) return;
+  //figure out the size of the register
+  uint32_t value = 0;
+  uint32_t size = emup_regsize(srcregid);
+  //get the data from the register
+  emup_regget(proc, srcregid, (void*)(&value));
+  //get the target address
+  uint32_t tgtaddr;
+  if(emub_read(board, proc->ip + 2, 4, (void*)(&tgtaddr)) < 4) return;
+  //write the data
+  emub_write(board, tgtaddr, size, (void*)(&value));
+  proc->ip += 6;
 }
 
 //read data from inline address to register
 static void ird(emu_processor* proc)
 {
-
+  //get the board pointer
+  emu_board* board = getboard(proc);
+  if(!board) return;
+  //get the target regid from the instruction stream
+  uint8_t tgtregid;
+  if(emub_read(board, proc->ip + 1, 1, (void*)(&tgtregid)) < 1) return;
+  //figure out the size of the register
+  uint32_t value = 0;
+  uint32_t size = emup_regsize(tgtregid);
+  //get the source address
+  uint32_t srcaddr;
+  if(emub_read(board, proc->ip + 2, 4, (void*)(&srcaddr)) < 4) return;
+  //read the data from memory
+  if(emub_read(board, srcaddr, size, (void*)(&value)) < size)
+  {
+    proc->ip += 6;
+    return;
+  }
+  //write the data to the register
+  emup_regset(proc, tgtregid, (void*)(&value));
+  //increment the instruction pointer
+  proc->ip += 6;
 }
 
-//register of target address, register of value
+//write register data to address in another register
 static void iwtr(emu_processor* proc)
 {
   //get the board pointer
   emu_board* board = getboard(proc);
   if(!board) return;
-  //get the values and target address from listed registers
-  uint8_t regid;
+  //get the source regid
+  uint8_t srcregid;
+  if(emub_read(board, proc->ip + 1, 1, (void*)(&srcregid)) < 1) return;
+  //figure out the size of the value
   uint32_t value = 0;
-  uint32_t addr = 0;
-  if(!emub_read(board, proc->ip + 1, 1, (void*)(&regid))) return;
-  emup_regget(proc, regid, (void*)(&value));
-  //get the address from a second register
-  if(!emub_read(board, proc->ip + 2, 1, (void*)(&regid))) return;
-  emup_regget(proc, regid, (void*)(&value));
-  //write the bytes to memory
+  uint32_t size = emup_regsize(srcregid);
+  //get the value we want to write at the target address
+  emup_regget(proc, srcregid, (void*)(&value));
+  //get the target address register
+  uint8_t tgtregid;
+  if(emub_read(board, proc->ip + 2, 1, (void*)(&tgtregid)) < 1) return;
+  //get the target address from the target address register
+  uint32_t tgtaddr = 0;
+  emup_regget(proc, tgtregid, (void*)(&tgtaddr));
+  //write the data to the target address
+  emub_write(board, tgtaddr, size, (void*)(&value));
+  //increment the instruction pointer
+  proc->ip += 3;
+}
+
+//retrieve value from register address, place in register
+static void irdr(emu_processor* proc)
+{
+  //get the board pointer
+  emu_board* board = getboard(proc);
+  if(!board) return;
+  //get the source address regid
+  uint8_t srcregid;
+  if(emub_read(board, proc->ip + 2, 1, (void*)(&srcregid)) < 1) return;
+  //get the target regid
+  uint8_t tgtregid;
+  if(emub_read(board, proc->ip + 1, 1, (void*)(&tgtregid)) < 1) return;
+  //get the size of the value
+  uint32_t value;
+  uint32_t size = emup_regsize(tgtregid);
+  //get the address from the source address register
+  uint32_t srcaddr = 0;
+  emup_regget(proc, srcregid, (void*)(&srcaddr));
+  //copy the data from that address
+  if(emub_read(board, srcaddr, size, (void*)(&value)) < size)
+  {
+    proc->ip += 3;
+    return;
+  }
+  //place the data in the target register
+  emup_regset(proc, tgtregid, (void*)(&value));
+  //increment the instruction pointer
+  proc->ip += 3;
+}
+
+//move value from one register to another
+static void imov(emu_processor* proc)
+{
+  //get the board pointer
+  emu_board* board = getboard(proc);
+  if(!board) return;
+  //get the source register from memory
+  uint8_t srcregid;
+  if(emub_read(board, proc->ip + 2, 1, (void*)(&srcregid)) < 1) return;
+  //get the target register from memory
+  uint8_t tgtregid;
+  if(emub_read(board, proc->ip + 1, 1, (void*)(&tgtregid)) < 1) return;
+  //move the data
+  uint32_t value = 0;
+  emup_regget(proc, srcregid, (void*)(&value));
+  emup_regset(proc, tgtregid, (void*)(&value));
+  //increment the instruction pointer
+  proc->ip += 3;
+}
+
+//convert the value from one register to the type of the other,
+//and return the converted value
+static uint32_t convert(emu_processor* proc, uint8_t tgtregid, uint8_t srcregid)
+{
   
 }
 
-static void irdr(emu_processor* proc)
-{
-
-}
-
-static void imov(emu_processor* proc)
-{
-
-}
-
+//add value from one register to value in another
 static void iadd(emu_processor* proc)
 {
+  //get the board pointer
+  emu_board* board = getboard(proc);
+  if(!board) return;
+  //get the source and target registers from memory
+  uint8_t tgtregid;
+  uint8_t srcregid;
+  if(emub_read(board, proc->ip + 1, 1, (void*)(&tgtregid)) < 1) return;
+  if(emub_read(board, proc->ip + 2, 1, (void*)(&srcregid)) < 1) return;
+  //get the types of these registers
+  int tgttype = emup_regtype(tgtregid);
+  int srctype = emup_regtype(srcregid);
+  uint32_t tgtval;
+  uint32_t srcval;
+  emup_regget(proc, tgtregid, (void*)(&tgtval));
+  emup_regget(proc, srcregid, (void*)(&srcval));
+  if(tgttype != EMU_REGTYPE_FLOAT)
+  {
+    if(srctype == EMU_REGTYPE_FLOAT)
+    {
+      int32_t inted = (int32_t)(*(float*)(&srcval));
+    }
+  }
+  else
+  {
 
+  }
 }
 
 static void isub(emu_processor* proc)
@@ -190,7 +311,19 @@ static void ijges(emu_processor* proc)
 
 static void iprt(emu_processor* proc)
 {
+  //get the board pointer
+  emu_board* board = getboard(proc);
+  if(!board) return;
+  //get the regid from the instruction stream
+  uint8_t regid;
+  if(emub_read(board, proc->ip + 1, 1, (void*)(&regid)) < 1) return;
+  //figure out the size of the register
+  uint32_t size = emup_regsize(regid);
+  int val = 0;
+  emup_regget(proc, regid, &val);
+  printf("reg %x(%u): %x\n", regid, size, val);
 
+  proc->ip += 2;
 }
 
 static void iinp(emu_processor* proc)

@@ -6,12 +6,12 @@
 //ARGUMENT ORDER: REGISTER ALWAYS FIRST, DESTINATION FIRST
 
 #define EMUX_TP_INOP   0x00 //nop, no args
-#define EMUX_TP_SET    0x01 //put inline value in register
-#define EMUX_TP_WT     0x02 //set value at inline address
-#define EMUX_TP_RD     0x03 //get value from inline address
-#define EMUX_TP_WTR    0x04 //set value at register address
-#define EMUX_TP_RDR    0x05 //get value from register address
-#define EMUX_TP_MOV    0x06 //move value from register to register
+#define EMUX_TP_ISET   0x01 //put inline value in register
+#define EMUX_TP_IWT    0x02 //set value at inline address
+#define EMUX_TP_IRD    0x03 //get value from inline address
+#define EMUX_TP_IWTR   0x04 //set value at register address
+#define EMUX_TP_IRDR   0x05 //get value from register address
+#define EMUX_TP_IMOV   0x06 //move value from register to register
 
 #define EMUX_TP_IADD   0x07 //add reg2 + reg1
 #define EMUX_TP_ISUB   0x08 //sub reg2 - reg1

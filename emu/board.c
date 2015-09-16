@@ -97,7 +97,7 @@ uint32_t emub_write(emu_board* board, uint32_t addr, uint32_t count, void* from)
     uint32_t offset = addr & 0x00ffffff;
     uint32_t endi = offset + count;
     uint32_t memsize = dev->memsize;
-    if(count >= memsize) return 0;
+    if(count > memsize) return 0;
     uint8_t* src = (uint8_t*)from;
     uint8_t* dst = mem + offset;
     uint8_t* end = endi < memsize ? mem + endi : mem + memsize;

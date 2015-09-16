@@ -12,7 +12,7 @@
 #define EMU_REGTYPE_INT8  0
 #define EMU_REGTYPE_INT16 1
 #define EMU_REGTYPE_INT32 2
-#define EMU_REGTYPE_FLOAT  3
+#define EMU_REGTYPE_FLOAT 3
 //register IDs
 //there are actually up to 32 registers
 //we have names for the first 26 (roman alphabet)
@@ -75,7 +75,7 @@
 typedef struct emu_processor emu_processor;
 ///an instruction is a callback operating on the processor
 ///this should include incrementing the instruction pointer
-typedef void(*emu_instruction)(emu_processor* p);
+typedef void(*emu_instruction)(emu_processor*);
 
 ///the processor struct, which must be paired with a device.
 ///recommend construction using emup_create (see below)
