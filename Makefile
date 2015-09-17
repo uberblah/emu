@@ -5,7 +5,7 @@ LIBDIR=lib
 OBJDIR=obj
 TESTDIR=test
 
-TESTS=boardtest proctest
+TESTS=boardtest proctest ex_tp_test
 
 #OUTPUTS AND THEIR PREREQUISITES
 BINS=main
@@ -21,6 +21,9 @@ BTEST_OBJECTS=$(OBTEST:%=$(OBJDIR)/%.o)
 
 OPTEST=board processor proctest
 PTEST_OBJECTS=$(OPTEST:%=$(OBJDIR)/%.o)
+
+OTPTEST=ex_tp_test board processor example/termproc
+TPTEST_OBJECTS=$(OTPTEST:%=$(OBJDIR)/%.o)
 
 OLIB=board processor example/termproc
 LIB_OBJECTS=$(OLIB:%=$(OBJDIR)/%.o)
@@ -90,6 +93,10 @@ $(LIBDIR)/libemu.a: $(LIB_OBJECTS) | $(LIBDIR)
 	@printf '\033[33mARCHIVING \033[96m$@\033[m \033[33mFROM \033[94m$^\033[m\n'
 	ar rcs $@ $^
 	@printf "\033[m"
+$(TESTDIR)/ex_tp_test: $(TPTEST_OBJECTS) | $(TESTDIR)
+	@printf '\033[33mLINKING \033[96m$@\033[m \033[33mFROM \033[94m$^\033[m\n'
+	$(CC) $(BUILD_PARAM) $^ $(LDFLAGS) -o $@
+	@printf "\033[m"
 
 #GENERIC OBJECT TARGET
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR) $(SRCDIR)
@@ -105,4 +112,3 @@ clean:
 clobber: clean
 	@printf '\033[33mCLOBBERING...\033[m\n'
 	rm -r -f -v $(OUTPUTS) $(BINDIR) $(TESTDIR) $(LIBDIR)
-
