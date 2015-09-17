@@ -142,7 +142,7 @@ static void irdr(emu_processor* proc)
     }
     //place the data in the target register
     emup_regset(proc, tgtregid, (void*)(&value));
-  //increment the instruction pointer
+    //increment the instruction pointer
     proc->ip += 3;
 }
 
@@ -309,6 +309,7 @@ static void iadd(emu_processor* proc)
 
     //set the target register's new value
     emup_regset(proc, tgtregid, (void*)&tgtval);
+    proc->ip += 3;
 }
 
 static void isub(emu_processor* proc)
@@ -348,6 +349,7 @@ static void isub(emu_processor* proc)
 
     //set the target register's new value
     emup_regset(proc, tgtregid, (void*)&tgtval);
+    proc->ip += 3;
 }
 
 static void imul(emu_processor* proc)
@@ -387,6 +389,7 @@ static void imul(emu_processor* proc)
 
     //set the target register's new value
     emup_regset(proc, tgtregid, (void*)&tgtval);
+    proc->ip += 3;
 }
 
 static void idiv(emu_processor* proc)
@@ -426,6 +429,7 @@ static void idiv(emu_processor* proc)
 
     //set the target register's new value
     emup_regset(proc, tgtregid, (void*)&tgtval);
+    proc->ip += 3;
 }
 
 static void inot(emu_processor* proc)
@@ -468,6 +472,7 @@ static void ior(emu_processor* proc)
 
     //set the target register's new value
     emup_regset(proc, tgtregid, (void*)&tgtval);
+    proc->ip += 3;
 }
 
 static void iand(emu_processor* proc)
@@ -505,6 +510,7 @@ static void iand(emu_processor* proc)
 
     //set the target register's new value
     emup_regset(proc, tgtregid, (void*)&tgtval);
+    proc->ip += 3;
 }
 
 static void ixor(emu_processor* proc)
@@ -542,6 +548,7 @@ static void ixor(emu_processor* proc)
 
     //set the target register's new value
     emup_regset(proc, tgtregid, (void*)&tgtval);
+    proc->ip += 3;
 }
 
 static void ijmp(emu_processor* proc)
@@ -623,10 +630,24 @@ static void iprt(emu_processor* proc)
     uint8_t regid;
     if(emub_read(board, proc->ip + 1, 1, (void*)(&regid)) < 1) return;
     //figure out the size of the register
-    uint32_t size = emup_regsize(regid);
+    int type = emup_regtype(regid);
     int val = 0;
     emup_regget(proc, regid, &val);
-    printf("reg %x(%u): %x\n", regid, size, val);
+    switch(type)
+    {
+    case EMU_REGTYPE_INT8:
+	printf("%02x\n", (uint8_t)val);
+	break;
+    case EMU_REGTYPE_INT16:
+	printf("%04x\n", (uint16_t)val);
+	break;
+    case EMU_REGTYPE_INT32:
+	printf("%08x\n", (uint32_t)val);
+	break;
+    case EMU_REGTYPE_FLOAT:
+	printf("%f\n", *((float*)&val));
+	break;
+    }
 
     proc->ip += 2;
 }

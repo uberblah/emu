@@ -15,7 +15,7 @@ int main(int argc, char** argv)
     emub_connect(board, dev, 0);
 
     //TEST THE NOP, SET AND PRINT INSTRUCTIONS
-    printf("you should see \"deadbeef\" and its parts\n");
+    printf(">>> you should see \"deadbeef\" and its parts\n");
     char regid = EMU_REG_A;
     int value = 0xdeadbeef;
     int li = 0;
@@ -56,7 +56,7 @@ int main(int argc, char** argv)
 	emup_step(proc);
 
     //TEST THE WRITE AND READ INSTRUCTIONS
-    printf("you should see beginnings of \"deadbeef\"\n");
+    printf(">>> you should see beginnings of \"deadbeef\"\n");
     uint32_t addr = 0x100;
     value = 0xdeadbeef;
     li = 0;
@@ -111,7 +111,7 @@ int main(int argc, char** argv)
 	emup_step(proc);
     
     //TEST THE WTR AND RDR INSTRUCTIONS
-    printf("you should see parts of \"deadbeef\"\n");
+    printf(">>> you should see parts of \"deadbeef\"\n");
     addr = 0x200;
     value = 0xdeadbeef;
     li = 0;
@@ -144,7 +144,7 @@ int main(int argc, char** argv)
 	emup_step(proc);
 
     //TEST THE IMOV INSTRUCTION
-    printf("you should see \"beefbeef\" with a nice hole in it\n");
+    printf(">>> you should see \"beefbeef\" with a nice hole in it\n");
     addr = 0x200;
     value = 0xdeadbeef;
     li = 0;
@@ -169,6 +169,71 @@ int main(int argc, char** argv)
     buf[li++] = EMUX_TP_IPRT;
     buf[li++] = EMU_REG_B | EMU_REGPART_I;
 
+    //WRITE TEST TO MEMORY
+    emub_write(board, 0, TEST_MEMSIZE, (void*)buf);
+    //RUN TEST
+    proc->ip = 0;
+    while(proc->ip < li)
+	emup_step(proc);
+
+    //TEST THE ARITHMETIC  INSTRUCTIONS
+    printf(">>> you should see the numbers 2, 5, 7, 1.5, 3.5, 5.0\n");
+    uint32_t a = 2;
+    uint32_t b = 5;
+    li = 0;
+    buf[li++] = EMUX_TP_ISET;
+    buf[li++] = EMU_REG_A | EMU_REGPART_I;
+    buf[li++] = ((char*)&a)[0];
+    buf[li++] = ((char*)&a)[1];
+    buf[li++] = ((char*)&a)[2];
+    buf[li++] = ((char*)&a)[3];
+    buf[li++] = EMUX_TP_IPRT;
+    buf[li++] = EMU_REG_A | EMU_REGPART_I;
+    buf[li++] = EMUX_TP_ISET;
+    buf[li++] = EMU_REG_B | EMU_REGPART_I;
+    buf[li++] = ((char*)&b)[0];
+    buf[li++] = ((char*)&b)[1];
+    buf[li++] = ((char*)&b)[2];
+    buf[li++] = ((char*)&b)[3];
+    buf[li++] = EMUX_TP_IPRT;
+    buf[li++] = EMU_REG_B | EMU_REGPART_I;
+    buf[li++] = EMUX_TP_IMOV;
+    buf[li++] = EMU_REG_C | EMU_REGPART_I;
+    buf[li++] = EMU_REG_A | EMU_REGPART_I;
+    buf[li++] = EMUX_TP_IADD;
+    buf[li++] = EMU_REG_C | EMU_REGPART_I;
+    buf[li++] = EMU_REG_B | EMU_REGPART_I;
+    buf[li++] = EMUX_TP_IPRT;
+    buf[li++] = EMU_REG_C | EMU_REGPART_I;
+
+    //DO THE FLOAT TEST
+    float fa = 1.5f;
+    float fb = 3.5f;
+    buf[li++] = EMUX_TP_ISET;
+    buf[li++] = EMU_REG_A | EMU_REGPART_F;
+    buf[li++] = ((char*)&fa)[0];
+    buf[li++] = ((char*)&fa)[1];
+    buf[li++] = ((char*)&fa)[2];
+    buf[li++] = ((char*)&fa)[3];
+    buf[li++] = EMUX_TP_IPRT;
+    buf[li++] = EMU_REG_A | EMU_REGPART_F;
+    buf[li++] = EMUX_TP_ISET;
+    buf[li++] = EMU_REG_B | EMU_REGPART_F;
+    buf[li++] = ((char*)&fb)[0];
+    buf[li++] = ((char*)&fb)[1];
+    buf[li++] = ((char*)&fb)[2];
+    buf[li++] = ((char*)&fb)[3];
+    buf[li++] = EMUX_TP_IPRT;
+    buf[li++] = EMU_REG_B | EMU_REGPART_F;
+    buf[li++] = EMUX_TP_IMOV;
+    buf[li++] = EMU_REG_C | EMU_REGPART_F;
+    buf[li++] = EMU_REG_A | EMU_REGPART_F;
+    buf[li++] = EMUX_TP_IADD;
+    buf[li++] = EMU_REG_C | EMU_REGPART_F;
+    buf[li++] = EMU_REG_B | EMU_REGPART_F;
+    buf[li++] = EMUX_TP_IPRT;
+    buf[li++] = EMU_REG_C | EMU_REGPART_F;
+    
     //WRITE TEST TO MEMORY
     emub_write(board, 0, TEST_MEMSIZE, (void*)buf);
     //RUN TEST
