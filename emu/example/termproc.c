@@ -170,7 +170,105 @@ static void imov(emu_processor* proc)
 //and return the converted value
 static uint32_t convert(emu_processor* proc, uint8_t tgtregid, uint8_t srcregid)
 {
-  
+    uint32_t result = 0;
+
+    switch(emup_regtype(srcregid))
+    {
+    case EMU_REGTYPE_INT8:
+    {
+	uint8_t val;
+	emup_regget(proc, srcregid, (void*)&val);
+	switch(emup_regtype(tgtregid))
+	{
+	case EMU_REGTYPE_INT8:
+	    *((uint8_t*)&result) = (uint8_t)val;
+	    break;
+	case EMU_REGTYPE_INT16:
+	    *((uint16_t*)&result) = (uint16_t)val;
+	    break;
+	case EMU_REGTYPE_INT32:
+	    *((uint32_t*)&result) = (uint32_t)val;
+	    break;
+	case EMU_REGTYPE_FLOAT:
+	    *((float*)&result) = (float)val;
+	    break;
+	}
+	
+	break;
+    }
+    
+    case EMU_REGTYPE_INT16:
+    {
+	uint16_t val;
+	emup_regget(proc, srcregid, (void*)&val);
+	switch(emup_regtype(tgtregid))
+	{
+	case EMU_REGTYPE_INT8:
+	    *((uint8_t*)&result) = (uint8_t)val;
+	    break;
+	case EMU_REGTYPE_INT16:
+	    *((uint16_t*)&result) = (uint16_t)val;
+	    break;
+	case EMU_REGTYPE_INT32:
+	    *((uint32_t*)&result) = (uint32_t)val;
+	    break;
+	case EMU_REGTYPE_FLOAT:
+	    *((float*)&result) = (float)val;
+	    break;
+	}
+	
+	break;
+    }
+    
+    case EMU_REGTYPE_INT32:
+    {
+	uint32_t val;
+	emup_regget(proc, srcregid, (void*)&val);
+	switch(emup_regtype(tgtregid))
+	{
+	case EMU_REGTYPE_INT8:
+	    *((uint8_t*)&result) = (uint8_t)val;
+	    break;
+	case EMU_REGTYPE_INT16:
+	    *((uint16_t*)&result) = (uint16_t)val;
+	    break;
+	case EMU_REGTYPE_INT32:
+	    *((uint32_t*)&result) = (uint32_t)val;
+	    break;
+	case EMU_REGTYPE_FLOAT:
+	    *((float*)&result) = (float)val;
+	    break;
+	}
+	
+	break;
+    }
+    
+    case EMU_REGTYPE_FLOAT:
+    {
+	float val;
+	emup_regget(proc, srcregid, (void*)&val);
+	switch(emup_regtype(tgtregid))
+	{
+	case EMU_REGTYPE_INT8:
+	    *((uint8_t*)&result) = (uint8_t)val;
+	    break;
+	case EMU_REGTYPE_INT16:
+	    *((uint16_t*)&result) = (uint16_t)val;
+	    break;
+	case EMU_REGTYPE_INT32:
+	    *((uint32_t*)&result) = (uint32_t)val;
+	    break;
+	case EMU_REGTYPE_FLOAT:
+	    *((float*)&result) = (float)val;
+	    break;
+	}
+	
+	break;
+    }
+    
+    }
+    
+    return result;
 }
 
 //add value from one register to value in another
@@ -179,44 +277,155 @@ static void iadd(emu_processor* proc)
     //get the board pointer
     emu_board* board = getboard(proc);
     if(!board) return;
+    
     //get the source and target registers from memory
     uint8_t tgtregid;
     uint8_t srcregid;
     if(emub_read(board, proc->ip + 1, 1, (void*)(&tgtregid)) < 1) return;
     if(emub_read(board, proc->ip + 2, 1, (void*)(&srcregid)) < 1) return;
+    
     //get the types of these registers
     int tgttype = emup_regtype(tgtregid);
-    int srctype = emup_regtype(srcregid);
     uint32_t tgtval;
-    uint32_t srcval;
+    uint32_t srcval = convert(proc, tgtregid, srcregid);
     emup_regget(proc, tgtregid, (void*)(&tgtval));
-    emup_regget(proc, srcregid, (void*)(&srcval));
-    if(tgttype != EMU_REGTYPE_FLOAT)
+
+    //do the addition
+    switch(tgttype)
     {
-	if(srctype == EMU_REGTYPE_FLOAT)
-	{
-	    int32_t inted = (int32_t)(*(float*)(&srcval));
-	}
+    case EMU_REGTYPE_INT8:
+	*((uint8_t*)&tgtval) += *((uint8_t*)&srcval);
+	break;
+    case EMU_REGTYPE_INT16:
+	*((uint16_t*)&tgtval) += *((uint16_t*)&srcval);
+	break;
+    case EMU_REGTYPE_INT32:
+	*((uint32_t*)&tgtval) += *((uint32_t*)&srcval);
+	break;
+    case EMU_REGTYPE_FLOAT:
+	*((float*)&tgtval) += *((float*)&srcval);
+	break;
     }
-    else
-    {
-	
-    }
+
+    //set the target register's new value
+    emup_regset(proc, tgtregid, (void*)&tgtval);
 }
 
 static void isub(emu_processor* proc)
 {
+    //get the board pointer
+    emu_board* board = getboard(proc);
+    if(!board) return;
+    
+    //get the source and target registers from memory
+    uint8_t tgtregid;
+    uint8_t srcregid;
+    if(emub_read(board, proc->ip + 1, 1, (void*)(&tgtregid)) < 1) return;
+    if(emub_read(board, proc->ip + 2, 1, (void*)(&srcregid)) < 1) return;
+    
+    //get the types of these registers
+    int tgttype = emup_regtype(tgtregid);
+    uint32_t tgtval;
+    uint32_t srcval = convert(proc, tgtregid, srcregid);;
+    emup_regget(proc, tgtregid, (void*)(&tgtval));
 
+    //do the addition
+    switch(tgttype)
+    {
+    case EMU_REGTYPE_INT8:
+	*((uint8_t*)&tgtval) -= *((uint8_t*)&srcval);
+	break;
+    case EMU_REGTYPE_INT16:
+	*((uint16_t*)&tgtval) -= *((uint16_t*)&srcval);
+	break;
+    case EMU_REGTYPE_INT32:
+	*((uint32_t*)&tgtval) -= *((uint32_t*)&srcval);
+	break;
+    case EMU_REGTYPE_FLOAT:
+	*((float*)&tgtval) -= *((float*)&srcval);
+	break;
+    }
+
+    //set the target register's new value
+    emup_regset(proc, tgtregid, (void*)&tgtval);
 }
 
 static void imul(emu_processor* proc)
 {
+    //get the board pointer
+    emu_board* board = getboard(proc);
+    if(!board) return;
+    
+    //get the source and target registers from memory
+    uint8_t tgtregid;
+    uint8_t srcregid;
+    if(emub_read(board, proc->ip + 1, 1, (void*)(&tgtregid)) < 1) return;
+    if(emub_read(board, proc->ip + 2, 1, (void*)(&srcregid)) < 1) return;
+    
+    //get the types of these registers
+    int tgttype = emup_regtype(tgtregid);
+    uint32_t tgtval;
+    uint32_t srcval = convert(proc, tgtregid, srcregid);
+    emup_regget(proc, tgtregid, (void*)(&tgtval));
 
+    //do the addition
+    switch(tgttype)
+    {
+    case EMU_REGTYPE_INT8:
+	*((uint8_t*)&tgtval) *= *((uint8_t*)&srcval);
+	break;
+    case EMU_REGTYPE_INT16:
+	*((uint16_t*)&tgtval) *= *((uint16_t*)&srcval);
+	break;
+    case EMU_REGTYPE_INT32:
+	*((uint32_t*)&tgtval) *= *((uint32_t*)&srcval);
+	break;
+    case EMU_REGTYPE_FLOAT:
+	*((float*)&tgtval) *= *((float*)&srcval);
+	break;
+    }
+
+    //set the target register's new value
+    emup_regset(proc, tgtregid, (void*)&tgtval);
 }
 
 static void idiv(emu_processor* proc)
 {
+    //get the board pointer
+    emu_board* board = getboard(proc);
+    if(!board) return;
+    
+    //get the source and target registers from memory
+    uint8_t tgtregid;
+    uint8_t srcregid;
+    if(emub_read(board, proc->ip + 1, 1, (void*)(&tgtregid)) < 1) return;
+    if(emub_read(board, proc->ip + 2, 1, (void*)(&srcregid)) < 1) return;
+    
+    //get the types of these registers
+    int tgttype = emup_regtype(tgtregid);
+    uint32_t tgtval;
+    uint32_t srcval = convert(proc, tgtregid, srcregid);
+    emup_regget(proc, tgtregid, (void*)(&tgtval));
 
+    //do the addition
+    switch(tgttype)
+    {
+    case EMU_REGTYPE_INT8:
+	*((uint8_t*)&tgtval) /= *((uint8_t*)&srcval);
+	break;
+    case EMU_REGTYPE_INT16:
+	*((uint16_t*)&tgtval) /= *((uint16_t*)&srcval);
+	break;
+    case EMU_REGTYPE_INT32:
+	*((uint32_t*)&tgtval) /= *((uint32_t*)&srcval);
+	break;
+    case EMU_REGTYPE_FLOAT:
+	*((float*)&tgtval) /= *((float*)&srcval);
+	break;
+    }
+
+    //set the target register's new value
+    emup_regset(proc, tgtregid, (void*)&tgtval);
 }
 
 static void inot(emu_processor* proc)
@@ -226,17 +435,113 @@ static void inot(emu_processor* proc)
 
 static void ior(emu_processor* proc)
 {
+    //get the board pointer
+    emu_board* board = getboard(proc);
+    if(!board) return;
+    
+    //get the source and target registers from memory
+    uint8_t tgtregid;
+    uint8_t srcregid;
+    if(emub_read(board, proc->ip + 1, 1, (void*)(&tgtregid)) < 1) return;
+    if(emub_read(board, proc->ip + 2, 1, (void*)(&srcregid)) < 1) return;
+    
+    //get the types of these registers
+    int tgttype = emup_regtype(tgtregid);
+    uint32_t tgtval;
+    uint32_t srcval = convert(proc, tgtregid, srcregid);
+    emup_regget(proc, tgtregid, (void*)(&tgtval));
 
+    //do the addition
+    switch(tgttype)
+    {
+    case EMU_REGTYPE_INT8:
+	*((uint8_t*)&tgtval) |= *((uint8_t*)&srcval);
+	break;
+    case EMU_REGTYPE_INT16:
+	*((uint16_t*)&tgtval) |= *((uint16_t*)&srcval);
+	break;
+    case EMU_REGTYPE_FLOAT:
+    case EMU_REGTYPE_INT32:
+	*((uint32_t*)&tgtval) |= *((uint32_t*)&srcval);
+	break;
+    }
+
+    //set the target register's new value
+    emup_regset(proc, tgtregid, (void*)&tgtval);
 }
 
 static void iand(emu_processor* proc)
 {
+    //get the board pointer
+    emu_board* board = getboard(proc);
+    if(!board) return;
+    
+    //get the source and target registers from memory
+    uint8_t tgtregid;
+    uint8_t srcregid;
+    if(emub_read(board, proc->ip + 1, 1, (void*)(&tgtregid)) < 1) return;
+    if(emub_read(board, proc->ip + 2, 1, (void*)(&srcregid)) < 1) return;
+    
+    //get the types of these registers
+    int tgttype = emup_regtype(tgtregid);
+    uint32_t tgtval;
+    uint32_t srcval = convert(proc, tgtregid, srcregid);
+    emup_regget(proc, tgtregid, (void*)(&tgtval));
 
+    //do the addition
+    switch(tgttype)
+    {
+    case EMU_REGTYPE_INT8:
+	*((uint8_t*)&tgtval) &= *((uint8_t*)&srcval);
+	break;
+    case EMU_REGTYPE_INT16:
+	*((uint16_t*)&tgtval) &= *((uint16_t*)&srcval);
+	break;
+    case EMU_REGTYPE_INT32:
+    case EMU_REGTYPE_FLOAT:
+	*((uint32_t*)&tgtval) &= *((uint32_t*)&srcval);
+	break;
+    }
+
+    //set the target register's new value
+    emup_regset(proc, tgtregid, (void*)&tgtval);
 }
 
 static void ixor(emu_processor* proc)
 {
+    //get the board pointer
+    emu_board* board = getboard(proc);
+    if(!board) return;
+    
+    //get the source and target registers from memory
+    uint8_t tgtregid;
+    uint8_t srcregid;
+    if(emub_read(board, proc->ip + 1, 1, (void*)(&tgtregid)) < 1) return;
+    if(emub_read(board, proc->ip + 2, 1, (void*)(&srcregid)) < 1) return;
+    
+    //get the types of these registers
+    int tgttype = emup_regtype(tgtregid);
+    uint32_t tgtval;
+    uint32_t srcval = convert(proc, tgtregid, srcregid);
+    emup_regget(proc, tgtregid, (void*)(&tgtval));
 
+    //do the addition
+    switch(tgttype)
+    {
+    case EMU_REGTYPE_INT8:
+	*((uint8_t*)&tgtval) ^= *((uint8_t*)&srcval);
+	break;
+    case EMU_REGTYPE_INT16:
+	*((uint16_t*)&tgtval) ^= *((uint16_t*)&srcval);
+	break;
+    case EMU_REGTYPE_FLOAT:
+    case EMU_REGTYPE_INT32:
+	*((uint32_t*)&tgtval) ^= *((uint32_t*)&srcval);
+	break;
+    }
+
+    //set the target register's new value
+    emup_regset(proc, tgtregid, (void*)&tgtval);
 }
 
 static void ijmp(emu_processor* proc)
