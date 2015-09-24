@@ -434,7 +434,21 @@ static void idiv(emu_processor* proc)
 
 static void inot(emu_processor* proc)
 {
+    //get the board pointer
+    emu_board* board = getboard(proc);
+    if(!board) return;
 
+    //get the target register from memory
+    uint8_t regid;
+    if(emub_read(board, proc->ip + 1, 1, (void*)(&regid)) < 1) return;
+
+    //get the current register value
+    uint32_t val;
+    emup_regget(proc, regid, (void*)(&val));
+    val = ~val;
+    emup_regset(proc, regid, (void*)(&val));
+
+    proc->ip += 2;
 }
 
 static void ior(emu_processor* proc)
@@ -551,76 +565,91 @@ static void ixor(emu_processor* proc)
     proc->ip += 3;
 }
 
+//jump to inline address
 static void ijmp(emu_processor* proc)
 {
-
+    
 }
 
+//jump to inline address if register zero
 static void ijz(emu_processor* proc)
 {
 
 }
 
+//jump to inline address if register not zero
 static void ijnz(emu_processor* proc)
 {
 
 }
 
+//jump to inline address if register negative
 static void ijl(emu_processor* proc)
 {
 
 }
 
+//jump to inline address if register zero or less
 static void ijle(emu_processor* proc)
 {
 
 }
 
+//jump to inline address if register positive
 static void ijg(emu_processor* proc)
 {
 
 }
 
+//jump to inline address if register non-negative
 static void ijge(emu_processor* proc)
 {
 
 }
 
+//jump to register address 
 static void ijs(emu_processor* proc)
 {
 
 }
 
+//jump to register address if register zero
 static void ijzs(emu_processor* proc)
 {
 
 }
 
+//jump to register address if register not zero
 static void ijnzs(emu_processor* proc)
 {
 
 }
 
+//jump to register address if register negative
 static void ijls(emu_processor* proc)
 {
 
 }
 
+//jump to register address if register zero or less
 static void ijles(emu_processor* proc)
 {
 
 }
 
+//jump to register address if register positive
 static void ijgs(emu_processor* proc)
 {
 
 }
 
+//jump to register address if register non-negative
 static void ijges(emu_processor* proc)
 {
 
 }
 
+//print register value to standard output
 static void iprt(emu_processor* proc)
 {
     //get the board pointer
@@ -652,48 +681,37 @@ static void iprt(emu_processor* proc)
     proc->ip += 2;
 }
 
+//receive input from command line to register
 static void iinp(emu_processor* proc)
 {
-
+    
 }
 
+//send irq to board
 static void iirq(emu_processor* proc)
 {
 
 }
 
+//not sure what the plan was for this one
 static void ibdc(emu_processor* proc)
 {
 
 }
 
+//no clue
 static void iist(emu_processor* proc)
 {
 
 }
 
+//yeah, I'm dumb :P
 static void iigt(emu_processor* proc)
 {
 
 }
 
-/*
-const emu_instruction inset[256] =
-{
-  inop , iset, iwrite, iread, imov, iadd, isub , imul, //0 - 7
-  idiv , inot, ior   , iand , ixor, ijmp, ijz  , ijnz, //8 - 15
-  ijl  , ijle, ijg   , ijge , ijs , ijzs, ijnzs, ijls, //16 - 23
-  ijles, ijg , ijges , iprt , iinp, 0   , 0    , 0   , //24 - 31
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, //32 - 47
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, //48 - 63
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, //64 - 79
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, //80 - 95
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,0, 0, 0, 0, 0, //96 - 111
-  iirq, ibdc , iist  , iigt , 0   , 0   , 0    , 0   , //112 - 119
-  0, 0, 0, 0, 0, 0, 0, 0 //120 - 127
-};
-*/
-
+//allocate a new termproc and its device struct
 emu_processor* emux_tp_create(uint32_t memsize)
 {
     emu_instruction inset[256];
